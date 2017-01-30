@@ -1,0 +1,44 @@
+[paper2 - nell]
+
+	macroreading - has redundant information.
+		read a lot of texts.
+
+	microreading - doesn't have redundant information.
+		if i have learnt how to read, i should be good to go.
+		extract information from a single sentence or tiny amount of data.
+		figures out if stuff is mentioned in the task.
+
+		for humans, does macroreading => microreading
+
+	Project idea: Exploring semantic drift and how human interaction affects this.
+
+[paper 2 contd]
+
+	Active Learning - Provost tells us it is bad
+		- learn the wrong distribution after a lot of intervention
+
+	David Sonian Semantics
+		n-ary events can be broken down into pairwise tuples...
+		"person X bombing location Y using bomb-type Z on time W" can be broken down into event E such that
+		E = { bomber(e, X), bombUsed(e, Z), bombLocation(e,Y), bombWhen(e,W) }
+
+[paper 3 - openIE series]
+	IE becomes domain specific.
+	Ed Howie - ontologists are of 5 types. They can't reconcile differences
+
+	Checkout : Linked Open Data (linkeddata.org); ISWC - Internet Semantic Web Conference.
+		Data is open source. data uses creator's ontology. users' ontology could differ.
+		Then, talking to each other is hard. Hence, a universal schema is desirable.
+		However, universal schemas are hard to learn.
+		Instead, we can learn to translate from one ontology to another.
+
+	appositive thingies - linguistics
+
+	find weaknesses in openIE demo - what website?
+	Chris Re - IE dude. owns a startup that works on IE.
+
+	Common Sense knowledge - what do we do to it?
+
+[paper4] - you presented. it was meh. over 3 classes :D
+
+[paper5] - mathematically, probably semi-crf are more powerful than crf. however if you change the labels a bit.. use BIO instead of IO, crfs should be the same as semi-crf, no?
