@@ -1,3 +1,5 @@
 *.zip
 */data/*
 papers/*
+*.py[cod]
+*.DS_Store
