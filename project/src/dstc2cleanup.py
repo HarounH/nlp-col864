@@ -36,29 +36,25 @@ for dirpath, dirs, files in os.walk(input):
 			label_turns = label_data["turns"];
 			log_turns = log_data["turns"];
 			
-			noData = False;
-			lst = []
-			nextSlu = "";
-			start = True;
+			conversation = []
 			for i in range(len(log_turns)):
-				d= {}
+				exchange= {}
 				if "transcript" in log_turns[i]["output"]:
-					d['system'] = log_turns[i]["output"]["transcript"];
+					exchange['system'] = log_turns[i]["output"]["transcript"];
+					dialog_acts = log_turns[i]["output"]["dialog-acts"];
+					exchange['slots']={}
+					for dialog_act_index in range(len(dialog_acts)):
+						slots = dialog_acts[dialog_act_index]["slots"];
+						for slot_index in range(len(slots)):
+							if len(slots[slot_index])==2:
+								exchange['slots'][slots[slot_index][0]]=slots[slot_index][1];
 					# print d['system'];
-				else:
-					noData = True;
 				if "transcription" in label_turns[i]:
-					d['user'] = label_turns[i]["transcription"];
+					exchange['user'] = label_turns[i]["transcription"];
 					# print d['user'];
-				else:
-					noData = True;
-				lst.append(d);
-
-			if noData == True:
-				noDataCount=noDataCount+1;
-			else:
-				count=count+1
-				f = open(output + str(count) + '.json' ,'w')
-				f.write(json.dumps(lst));
-				f.close();
+				conversation.append(exchange);
+			count=count+1
+			f = open(output + str(count) + '.json' ,'w')
+			f.write(json.dumps(conversation));
+			f.close();
 print count;

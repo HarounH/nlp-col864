@@ -3,3 +3,4 @@
 papers/*
 *.py[cod]
 *.DS_Store
+*.vscode*
