@@ -42,3 +42,35 @@
 [paper4] - you presented. it was meh. over 3 classes :D
 
 [paper5] - mathematically, probably semi-crf are more powerful than crf. however if you change the labels a bit.. use BIO instead of IO, crfs should be the same as semi-crf, no?
+
+[paper 6] - your presentation.
+
+[paper 7 - CNN; Barun]
+	Definition of CNNs
+	kernel = filter.
+
+	NLP:
+		Input size:
+			sentencesize * word-embedding-length * 1
+		Kernel size: 
+			k * embedding-length * 1 sometimes.
+	A lot of discussion on filters and strides etc.
+
+	CBow model and 
+
+[paper 8]
+LDA - model :
+		
+
+HDP : Hierarchical Dirichlet process
+
+Jordan: "non-parametric" clustering... chinese resto process.
+
+Continuing with dirichlet distribution.
+	Cool illustration of plotting samples of dirichlet vs parameter.
+
+Collapsed gibb's sampling ... speed up normal gibbs sampling by integrating over certain variables.
+
+Ranking is helpful. Helps preserve precision of overall system.
+
+Tweets have bucket loads of entity types. Hence, fine grained entity recognition becomes a thing.
