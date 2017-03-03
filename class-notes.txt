@@ -74,3 +74,9 @@ Collapsed gibb's sampling ... speed up normal gibbs sampling by integrating over
 Ranking is helpful. Helps preserve precision of overall system.
 
 Tweets have bucket loads of entity types. Hence, fine grained entity recognition becomes a thing.
+
+[paper 9]
+Model free vs model based RL...
+
+
+[paper 10]
