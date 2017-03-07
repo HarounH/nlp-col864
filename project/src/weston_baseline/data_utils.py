@@ -126,11 +126,6 @@ def vectorize_data(data, word_idx, sentence_size, memory_size, candidate_idx):
         A.append(y)
     return np.array(S), np.array(Q), np.array(A)
 
-def load_dstc2_data(data_folder):
-    train_data = read_dstc2_data(data_folder+'dialog-babi-task6-dstc2-trn.txt')
-    test_data = read_dstc2_data(data_folder+'dialog-babi-task6-dstc2-tst.txt')
-    return train_data, test_data
-
 def read_dstc2_data(data_file):
     data=[]
     with open(data_file) as f:
@@ -139,11 +134,11 @@ def read_dstc2_data(data_file):
             if line.strip():
                 nid, line = line.split(' ', 1)
                 nid = int(nid)
+                line = line.rstrip()
                 if '\t' in line:
                     q,a= line.split('\t',1)
                     q = q.split(' ')
-                    a = a.strip()
-                    data.append((mem, q, a.strip()))
+                    data.append((mem[:], q, a))
                     mem.append(q)
                     mem.append(a.split(' '))
                 else:
@@ -151,6 +146,3 @@ def read_dstc2_data(data_file):
             else:
                 mem = []
     return data
-
-load_dstc2_data('data/dialog-bAbI-tasks/')
-#load_task('data/tasks_1-20_v1-2/en/',1)

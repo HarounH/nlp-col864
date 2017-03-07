@@ -3,7 +3,7 @@ Download tasks from facebook.ai/babi """
 from __future__ import absolute_import
 from __future__ import print_function
 
-from data_utils import load_dstc2_data, vectorize_data
+from data_utils import read_dstc2_data, vectorize_data
 from sklearn import cross_validation, metrics
 from memn2n import MemN2N
 from itertools import chain
@@ -16,13 +16,12 @@ tf.flags.DEFINE_float("learning_rate", 0.01, "Learning rate for SGD.")
 tf.flags.DEFINE_float("anneal_rate", 25, "Number of epochs between halving the learnign rate.")
 tf.flags.DEFINE_float("anneal_stop_epoch", 100, "Epoch number to end annealed lr schedule.")
 tf.flags.DEFINE_float("max_grad_norm", 40.0, "Clip gradients to this norm.")
-tf.flags.DEFINE_integer("evaluation_interval", 10, "Evaluate and print results every x epochs")
-tf.flags.DEFINE_integer("batch_size", 32, "Batch size for training.")
-tf.flags.DEFINE_integer("hops", 3, "Number of hops in the Memory Network.")
-tf.flags.DEFINE_integer("epochs", 100, "Number of epochs to train for.")
-tf.flags.DEFINE_integer("embedding_size", 20, "Embedding size for embedding matrices.")
-tf.flags.DEFINE_integer("memory_size", 50, "Maximum size of memory.")
-#tf.flags.DEFINE_integer("task_id", 8, "bAbI task id, 1 <= id <= 20")
+tf.flags.DEFINE_integer("evaluation_interval", 25, "Evaluate and print results every x epochs")
+tf.flags.DEFINE_integer("batch_size", 64, "Batch size for training.")
+tf.flags.DEFINE_integer("hops", 4, "Number of hops in the Memory Network.")
+tf.flags.DEFINE_integer("epochs", 1000, "Number of epochs to train for.")
+tf.flags.DEFINE_integer("embedding_size", 128, "Embedding size for embedding matrices.")
+tf.flags.DEFINE_integer("memory_size", 10, "Maximum size of memory.")
 tf.flags.DEFINE_integer("random_state", None, "Random state.")
 tf.flags.DEFINE_string("data_dir", "data/dialog-bAbI-tasks/", "Directory containing dialog bAbI task")
 FLAGS = tf.flags.FLAGS
@@ -30,7 +29,8 @@ FLAGS = tf.flags.FLAGS
 #print("Started Task:", FLAGS.task_id)
 
 # task data
-train, test = load_dstc2_data(FLAGS.data_dir)
+train = read_dstc2_data(FLAGS.data_dir+'dialog-babi-task6-dstc2-trn.txt') + read_dstc2_data(FLAGS.data_dir+'dialog-babi-task6-dstc2-dev.txt')
+test = read_dstc2_data(FLAGS.data_dir+'dialog-babi-task6-dstc2-tst.txt')
 data = train + test
 
 vocab = sorted(reduce(lambda x, y: x | y, (set(list(chain.from_iterable(s)) + q) for s, q, a in data)))
@@ -42,7 +42,7 @@ candidate_idx={}
 with open(FLAGS.data_dir+'dialog-babi-task6-dstc2-candidates.txt') as cFile:
     for line in cFile.readlines():
         nid, line = line.split(' ', 1)
-        candidate_idx[line.strip()]=idx
+        candidate_idx[line.rstrip()]=idx
         idx=idx+1
 
 max_story_size = max(map(len, (s for s, _, _ in data)))
@@ -65,11 +65,9 @@ print("Longest story length", max_story_size)
 print("Average story length", mean_story_size)
 
 # train/validation/test sets
-S, Q, A = vectorize_data(train, word_idx, sentence_size, memory_size, candidate_idx)
-trainS, valS, trainQ, valQ, trainA, valA = cross_validation.train_test_split(S, Q, A, test_size=.1, random_state=FLAGS.random_state)
+trainS, trainQ, trainA = vectorize_data(train, word_idx, sentence_size, memory_size, candidate_idx)
+valS, valQ, valA = vectorize_data(test, word_idx, sentence_size, memory_size, candidate_idx)
 testS, testQ, testA = vectorize_data(test, word_idx, sentence_size, memory_size, candidate_idx)
-
-print(testS[0])
 
 print("Training set shape", trainS.shape)
 
@@ -94,6 +92,9 @@ batches = [(start, end) for start, end in batches]
 
 with tf.Session() as sess:
     model = MemN2N(batch_size, vocab_size, sentence_size, memory_size, FLAGS.embedding_size,answer_size,session=sess,hops=FLAGS.hops, max_grad_norm=FLAGS.max_grad_norm)
+
+    #model.restore(100)
+
     for t in range(1, FLAGS.epochs+1):
         # Stepped learning rate
         if t - 1 <= FLAGS.anneal_stop_epoch:
@@ -123,6 +124,8 @@ with tf.Session() as sess:
             val_preds = model.predict(valS, valQ)
             train_acc = metrics.accuracy_score(np.array(train_preds), train_labels)
             val_acc = metrics.accuracy_score(val_preds, val_labels)
+
+            model.save(t)
 
             print('-----------------------')
             print('Epoch', t)

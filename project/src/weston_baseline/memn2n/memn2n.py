@@ -280,3 +280,13 @@ class MemN2N(object):
         """
         feed_dict = {self._stories: stories, self._queries: queries}
         return self._sess.run(self.predict_log_proba_op, feed_dict=feed_dict)
+    
+    def save(self, t):
+        saver = tf.train.Saver()
+        save_path = saver.save(self._sess, "ckpt/model" + str(t) + ".ckpt")
+        print("Model saved in file: %s" % save_path)
+    
+    def restore(self, t):
+        saver = tf.train.Saver()
+        saver.restore(self._sess, "./ckpt/model" + str(t) + ".ckpt")
+        print("Model restored.")
