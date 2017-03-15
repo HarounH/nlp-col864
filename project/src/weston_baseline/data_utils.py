@@ -98,10 +98,10 @@ def vectorize_data(data, word_idx, sentence_size, memory_size, candidate_idx):
         ss = []
         for i, sentence in enumerate(story, 1):
             ls = max(0, sentence_size - len(sentence))
-            ss.append([word_idx[w] for w in sentence] + [0] * ls)
+            ss.append([word_idx[w] for w in sentence] + [0] * ls) # Sparse representation. okays.
 
         # take only the most recent sentences that fit in memory
-        ss = ss[::-1][:memory_size][::-1]
+        ss = ss[::-1][:memory_size][::-1] # Reverse basically?
 
         # Make the last word of each sentence the time 'word' which 
         # corresponds to vector of lookup table
@@ -113,10 +113,10 @@ def vectorize_data(data, word_idx, sentence_size, memory_size, candidate_idx):
         for _ in range(lm):
             ss.append([0] * sentence_size)
 
-        lq = max(0, sentence_size - len(query))
-        q = [word_idx[w] for w in query] + [0] * lq
+        lq = max(0, sentence_size - len(query)) # >=0 
+        q = [word_idx[w] for w in query] + [0] * lq # Padded with 0s. 
 
-        y = np.zeros(len(candidate_idx) + 1) # 0 is reserved for nil word
+        y = np.zeros(len(candidate_idx)) # 0 is reserved for nil word
         #for a in answer:
         #print(answer)
         y[candidate_idx[answer]] = 1

@@ -166,6 +166,15 @@ class MemN2N(object):
         with tf.variable_scope(self._name):
             nil_word_slot = tf.zeros([1, self._embedding_size])
             A = tf.concat(axis=0, values=[ nil_word_slot, self._init([self._vocab_size-1, self._embedding_size]) ])
+            
+
+            self.A = tf.Variable(A, name="A")
+            self.R = tf.Variable( self._init([self._embedding_size, self._embedding_size]) , name="R") # Initialize R using initializer given. Watch out for stddev. 
+
+            self.W = tf.Variable(self._init([self._embedding_size, self._answer_size]), name="W")
+        ''' BLOCK COMMENT - WRONG MODEL.
+        with tf.variable_scope(self._name):
+            A = tf.concat(axis=0, values=[ nil_word_slot, self._init([self._vocab_size-1, self._embedding_size]) ])
             C = tf.concat(axis=0, values=[ nil_word_slot, self._init([self._answer_size-1, self._embedding_size]) ])
 
             self.A_1 = tf.Variable(A, name="A")
@@ -180,14 +189,14 @@ class MemN2N(object):
             # self.H = tf.Variable(self._init([self._embedding_size, self._embedding_size]), name="H")
 
             # Use final C as replacement for W
-            # self.W = tf.Variable(self._init([self._embedding_size, self._vocab_size]), name="W")
-
+        '''
         self._nil_vars = set([self.A_1.name] + [x.name for x in self.C])
 
     def _inference(self, stories, queries):
         with tf.variable_scope(self._name):
             # Use A_1 for thee question embedding as per Adjacent Weight Sharing
             q_emb = tf.nn.embedding_lookup(self.A_1, queries)
+            print(q_emb)
             u_0 = tf.reduce_sum(q_emb * self._encoding, 1)
             u = [u_0]
 

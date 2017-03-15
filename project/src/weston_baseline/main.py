@@ -57,7 +57,7 @@ mean_story_size = int(np.mean([ len(s) for s, _, _ in data ]))
 sentence_size = max(map(len, chain.from_iterable(s for s, _, _ in data)))
 query_size = max(map(len, (q for _, q, _ in data)))
 memory_size = min(FLAGS.memory_size, max_story_size)
-answer_size = len(candidate_idx)+1
+answer_size = len(candidate_idx) # +1 TODO ... do we need +1???
 
 # Add time words/indexes
 for i in range(memory_size):
