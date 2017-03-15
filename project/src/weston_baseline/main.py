@@ -17,10 +17,10 @@ tf.flags.DEFINE_float("anneal_rate", 25, "Number of epochs between halving the l
 tf.flags.DEFINE_float("anneal_stop_epoch", 100, "Epoch number to end annealed lr schedule.")
 tf.flags.DEFINE_float("max_grad_norm", 40.0, "Clip gradients to this norm.")
 tf.flags.DEFINE_integer("evaluation_interval", 25, "Evaluate and print results every x epochs")
-tf.flags.DEFINE_integer("batch_size", 64, "Batch size for training.")
+tf.flags.DEFINE_integer("batch_size", 32, "Batch size for training.")
 tf.flags.DEFINE_integer("hops", 4, "Number of hops in the Memory Network.")
-tf.flags.DEFINE_integer("epochs", 1000, "Number of epochs to train for.")
-tf.flags.DEFINE_integer("embedding_size", 128, "Embedding size for embedding matrices.")
+tf.flags.DEFINE_integer("epochs", 100, "Number of epochs to train for.")
+tf.flags.DEFINE_integer("embedding_size", 32, "Embedding size for embedding matrices.")
 tf.flags.DEFINE_integer("memory_size", 10, "Maximum size of memory.")
 tf.flags.DEFINE_integer("random_state", None, "Random state.")
 tf.flags.DEFINE_string("data_dir", "data/dialog-bAbI-tasks/", "Directory containing dialog bAbI task")
@@ -29,9 +29,16 @@ FLAGS = tf.flags.FLAGS
 #print("Started Task:", FLAGS.task_id)
 
 # task data
-train = read_dstc2_data(FLAGS.data_dir+'dialog-babi-task6-dstc2-trn.txt') + read_dstc2_data(FLAGS.data_dir+'dialog-babi-task6-dstc2-dev.txt')
+'''
+train = read_dstc2_data(FLAGS.data_dir+'dialog-babi-task6-dstc2-trn.txt')
 test = read_dstc2_data(FLAGS.data_dir+'dialog-babi-task6-dstc2-tst.txt')
-data = train + test
+val = read_dstc2_data(FLAGS.data_dir+'dialog-babi-task6-dstc2-dev.txt')
+'''
+train = read_dstc2_data(FLAGS.data_dir+'small.txt')
+test = read_dstc2_data(FLAGS.data_dir+'small.txt')
+val = read_dstc2_data(FLAGS.data_dir+'small.txt')
+
+data = train + test + val
 
 vocab = sorted(reduce(lambda x, y: x | y, (set(list(chain.from_iterable(s)) + q) for s, q, a in data)))
 print(len(vocab))
@@ -66,7 +73,7 @@ print("Average story length", mean_story_size)
 
 # train/validation/test sets
 trainS, trainQ, trainA = vectorize_data(train, word_idx, sentence_size, memory_size, candidate_idx)
-valS, valQ, valA = vectorize_data(test, word_idx, sentence_size, memory_size, candidate_idx)
+valS, valQ, valA = vectorize_data(val, word_idx, sentence_size, memory_size, candidate_idx)
 testS, testQ, testA = vectorize_data(test, word_idx, sentence_size, memory_size, candidate_idx)
 
 print("Training set shape", trainS.shape)

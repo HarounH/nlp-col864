@@ -1,0 +1,144 @@
+1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
+2 i want a moderately priced restaurant in the west part of town	api_call R_cuisine west moderate
+3 saint_johns_chop_house R_post_code saint_johns_chop_house_post_code
+4 saint_johns_chop_house R_cuisine british
+5 saint_johns_chop_house R_location west
+6 saint_johns_chop_house R_phone saint_johns_chop_house_phone
+7 saint_johns_chop_house R_address saint_johns_chop_house_address
+8 saint_johns_chop_house R_price moderate
+9 saint_johns_chop_house R_rating 3
+10 prezzo R_post_code prezzo_post_code
+11 prezzo R_cuisine italian
+12 prezzo R_location west
+13 prezzo R_phone prezzo_phone
+14 prezzo R_address prezzo_address
+15 prezzo R_price moderate
+16 prezzo R_rating 9
+17 <SILENCE>	prezzo is a nice restaurant in the west of town in the moderate price range
+18 is there anything else	You are looking for a restaurant is that right?
+19 give me a different restaurant	prezzo is a nice restaurant in the west of town in the moderate price range
+20 goodbye	 you are welcome
+
+1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
+2 i want a moderately priced restaurant that serves	What kind of food would you like?
+3 canapes food	What part of town do you have in mind?
+4 it doesnt matter	api_call canapes R_location moderate
+5 api_call no result
+6 <SILENCE>	yippee_noodle_bar is a nice restaurant in the centre of town in the moderate price range
+7 gastropub food	Sorry there is no canapes restaurant in the moderate price range
+8 i want a gastropub restaurant	the cow pizza kitchen and bar is a nice restaurant in the centre of town serving gastropub food
+9 what is the address	Sure , the cow pizza kitchen and bar is on the_cow_pizza_kitchen_and_bar_address
+10 what is the phone number	The phone number of the cow pizza kitchen and bar is the_cow_pizza_kitchen_and_bar_phone
+11 what is the area	the cow pizza kitchen and bar is a nice place in the centre of town
+12 thank you goodbye	 you are welcome
+
+1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
+2 im looking for a cheap restaurant that serves tuscan food	api_call tuscan R_location cheap
+3 api_call no result
+4 <SILENCE>	Sorry there is no tuscan restaurant in the cheap price range
+5 im looking for a cheap restaurant that serves italian food	What part of town do you have in mind?
+6 any part of town	api_call italian R_location cheap
+7 zizzi_cambridge R_post_code zizzi_cambridge_post_code
+8 zizzi_cambridge R_cuisine italian
+9 zizzi_cambridge R_location centre
+10 zizzi_cambridge R_phone zizzi_cambridge_phone
+11 zizzi_cambridge R_address zizzi_cambridge_address
+12 zizzi_cambridge R_price cheap
+13 zizzi_cambridge R_rating 4
+14 ask R_post_code ask_post_code
+15 ask R_cuisine italian
+16 ask R_location centre
+17 ask R_phone ask_phone
+18 ask R_address ask_address
+19 ask R_price cheap
+20 ask R_rating 2
+21 da_vinci_pizzeria R_post_code da_vinci_pizzeria_post_code
+22 da_vinci_pizzeria R_cuisine italian
+23 da_vinci_pizzeria R_location north
+24 da_vinci_pizzeria R_phone da_vinci_pizzeria_phone
+25 da_vinci_pizzeria R_address da_vinci_pizzeria_address
+26 da_vinci_pizzeria R_price cheap
+27 da_vinci_pizzeria R_rating 3
+28 la_margherita R_post_code la_margherita_post_code
+29 la_margherita R_cuisine italian
+30 la_margherita R_location west
+31 la_margherita R_phone la_margherita_phone
+32 la_margherita R_address la_margherita_address
+33 la_margherita R_price cheap
+34 la_margherita R_rating 2
+35 pizza_hut_city_centre R_post_code pizza_hut_city_centre_post_code
+36 pizza_hut_city_centre R_cuisine italian
+37 pizza_hut_city_centre R_location centre
+38 pizza_hut_city_centre R_phone pizza_hut_city_centre_phone
+39 pizza_hut_city_centre R_address pizza_hut_city_centre_address
+40 pizza_hut_city_centre R_price cheap
+41 pizza_hut_city_centre R_rating 10
+42 <SILENCE>	pizza_hut_city_centre is a nice restaurant in the centre of town serving italian food
+43 may i have the address and phone number please	Sure , pizza_hut_city_centre is on pizza_hut_city_centre_address
+44 and the phone number please	The phone number of pizza_hut_city_centre is pizza_hut_city_centre_phone
+45 thank you good bye	 you are welcome
+
+1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
+2 im looking for canapes food in any price range	I am sorry but there is no canapes restaurant that matches your request
+3 how about european	api_call european R_location R_price
+4 eraina R_post_code eraina_post_code
+5 eraina R_cuisine european
+6 eraina R_location centre
+7 eraina R_phone eraina_phone
+8 eraina R_address eraina_address
+9 eraina R_price expensive
+10 eraina R_rating 1
+11 riverside_brasserie R_post_code riverside_brasserie_post_code
+12 riverside_brasserie R_cuisine european
+13 riverside_brasserie R_location centre
+14 riverside_brasserie R_phone riverside_brasserie_phone
+15 riverside_brasserie R_address riverside_brasserie_address
+16 riverside_brasserie R_price moderate
+17 riverside_brasserie R_rating 2
+18 de_luca_cucina_and_bar R_post_code de_luca_cucina_and_bar_post_code
+19 de_luca_cucina_and_bar R_cuisine european
+20 de_luca_cucina_and_bar R_location centre
+21 de_luca_cucina_and_bar R_phone de_luca_cucina_and_bar_phone
+22 de_luca_cucina_and_bar R_address de_luca_cucina_and_bar_address
+23 de_luca_cucina_and_bar R_price moderate
+24 de_luca_cucina_and_bar R_rating 1
+25 cambridge_lodge_restaurant R_post_code cambridge_lodge_restaurant_post_code
+26 cambridge_lodge_restaurant R_cuisine european
+27 cambridge_lodge_restaurant R_location west
+28 cambridge_lodge_restaurant R_phone cambridge_lodge_restaurant_phone
+29 cambridge_lodge_restaurant R_address cambridge_lodge_restaurant_address
+30 cambridge_lodge_restaurant R_price expensive
+31 cambridge_lodge_restaurant R_rating 2
+32 darrys_cookhouse_and_wine_shop R_post_code darrys_cookhouse_and_wine_shop_post_code
+33 darrys_cookhouse_and_wine_shop R_cuisine european
+34 darrys_cookhouse_and_wine_shop R_location centre
+35 darrys_cookhouse_and_wine_shop R_phone darrys_cookhouse_and_wine_shop_phone
+36 darrys_cookhouse_and_wine_shop R_address darrys_cookhouse_and_wine_shop_address
+37 darrys_cookhouse_and_wine_shop R_price expensive
+38 darrys_cookhouse_and_wine_shop R_rating 2
+39 michaelhouse_cafe R_post_code michaelhouse_cafe_post_code
+40 michaelhouse_cafe R_cuisine european
+41 michaelhouse_cafe R_location centre
+42 michaelhouse_cafe R_phone michaelhouse_cafe_phone
+43 michaelhouse_cafe R_address michaelhouse_cafe_address
+44 michaelhouse_cafe R_price expensive
+45 michaelhouse_cafe R_rating 10
+46 galleria R_post_code galleria_post_code
+47 galleria R_cuisine european
+48 galleria R_location centre
+49 galleria R_phone galleria_phone
+50 galleria R_address galleria_address
+51 galleria R_price moderate
+52 galleria R_rating 4
+53 restaurant_alimentum R_post_code restaurant_alimentum_post_code
+54 restaurant_alimentum R_cuisine european
+55 restaurant_alimentum R_location south
+56 restaurant_alimentum R_phone restaurant_alimentum_phone
+57 restaurant_alimentum R_address restaurant_alimentum_address
+58 restaurant_alimentum R_price moderate
+59 restaurant_alimentum R_rating 3
+60 <SILENCE>	michaelhouse_cafe is a great restaurant serving european food and it is in the expensive price range
+61 food an	What part of town do you have in mind?
+62 any any part of town	michaelhouse_cafe serves european food .
+63 may i have the address and phone number please	The phone number of michaelhouse_cafe is michaelhouse_cafe_phone
+64 thank you good bye	 you are welcome
