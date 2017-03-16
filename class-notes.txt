@@ -80,3 +80,6 @@ Model free vs model based RL...
 
 
 [paper 10]
+
+[paper 12]
+	Similarity to HMM
