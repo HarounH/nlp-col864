@@ -30,7 +30,7 @@ flags.DEFINE_boolean("is_test", False, "True for testing, False for Training [Fa
 flags.DEFINE_boolean("show", False, "print progress [False]")
 flags.DEFINE_string("candidate_filename","dialog-babi-task6-dstc2-candidates.txt","file containing valid candidates")
 flags.DEFINE_integer("n_candidates", 1, "Number of candidates to pick from")
-
+flags.DEFINE_integer("max_sentence_length", 0, "Maximum number of words in a sentence + 2")
 FLAGS = flags.FLAGS
 
 def main(_):
@@ -72,25 +72,28 @@ def main(_):
 			candidate2idx[line.rstrip()]=idx
 			idx=idx+1
 
-	FLAGS.n_candidates = len(candidate2idx)
 
 
 	max_story_size = max(map(len, (s for s, _, _ in raw_data)))
 	mean_story_size = int(np.mean([ len(s) for s, _, _ in raw_data ]))
+	
 	sentence_size = max(map(len, chain.from_iterable(s for s, _, _ in raw_data)))
 	query_size = max(map(len, (q for _, q, _ in raw_data)))
+	sentence_size = max(query_size, sentence_size) # for the position
+	sentence_size += 2  # +1 for time words, +1 for utterer
+	max_sentence_length = sentence_size
+	FLAGS.max_sentence_length = max_sentence_length
+	
+
 	n_memory_cells = min(FLAGS.mem_size, max_story_size)
-	answer_size = len(candidate2idx) # +1 TODO ... do we need +1???
+	
+	FLAGS.n_candidates = len(candidate2idx)
 
 	# We now have the candidates and everything else.
-
 	idx2word = dict(zip(word2idx.values(), word2idx.keys()))
 	FLAGS.nwords = len(word2idx)
 
 
-	sentence_size = max(query_size, sentence_size) # for the position
-	sentence_size += 2  # +1 for time words, +1 for utterer
-	max_sentence_length = sentence_size
 
 	# Vectorise data.
 	train_data = vectorize_data(raw_train, max_sentence_length, n_memory_cells, word2idx, candidate2idx)

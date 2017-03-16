@@ -25,17 +25,21 @@ class MemN2N(object):
         self.checkpoint_dir = config.checkpoint_dir
 
         self.n_candidates = config.n_candidates
+        self.max_sentence_length = config.max_sentence_length
 
         if not os.path.isdir(self.checkpoint_dir):
             raise Exception(" [!] Directory %s not found" % self.checkpoint_dir)
 
-        self.input = tf.placeholder(tf.float32, [None, self.edim], name="input")
-        self.time = tf.placeholder(tf.int32, [None, self.mem_size], name="time")
-        self.target = tf.placeholder(tf.float32, [self.batch_size, self.nwords], name="target")
-        self.context = tf.placeholder(tf.int32, [self.batch_size, self.mem_size], name="context")
-
+        self.input = tf.placeholder(tf.float32, [None, self.max_sentence_length], name="input")
+        # self.time = tf.placeholder(tf.int32, [None, self.mem_size], name="time")
+        # self.target = tf.placeholder(tf.float32, [self.batch_size, self.n_candidates], name="target")
+        self.target = tf.placeholder(tf.float32, [None, self.n_candidates], name="target")
+        # self.context = tf.placeholder(tf.int32, [self.batch_size, self.mem_size, self.edim], name="context")
+        self.context = tf.placeholder(tf.int32, [None, self.mem_size, self.max_sentence_length], name="context")
+        
         self.hid = []
-        self.hid.append(self.input)
+        # self.hid.append(self.input)
+        # self.hid must now have embedding on input
         self.share_list = []
         self.share_list.append([])
 
@@ -52,12 +56,18 @@ class MemN2N(object):
     def build_memory(self):
         self.global_step = tf.Variable(0, name="global_step")
 
+        nil_word_embedding = tf.zeros(size=(1, self.edim))
+
         # A=C.
-        self.A = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
+        # self.A = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
+        self.A = tf.concat(axis=0, values=[ nil_word_embedding, tf.random_normal([self.nwords - 1, self.edim], stddev=self.init_std) ])
         self.C = self.A # Refer to the same thing for now.
 
+        u0 = tf.reduce_sum(tf.nn.embedding_lookup(self.A, self.input), axis=1)
+        self.hid.append(u0)
+        
         # R
-        self.R = tf.Variable(tf.random_normal([self.edim, self.edim]), stddev=self.init_std)
+        self.R = tf.Variable(tf.random_normal([self.edim, self.edim], stddev=self.init_std))
     
         # W ... comes later.
         # self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates]), stddev=self.init_std)
@@ -72,32 +82,32 @@ class MemN2N(object):
         # self.T_B = tf.Variable(tf.random_normal([self.mem_size, self.edim], stddev=self.init_std))
 
         # m_i = sum A_ij * x_ij + T_A_i
-        Ain_c = tf.nn.embedding_lookup(self.A, self.context)
+        Ain_c = tf.redume_sum( tf.nn.embedding_lookup(self.A, self.context), axis=2 )
         # Ain_t = tf.nn.embedding_lookup(self.T_A, self.time)
         # Ain = tf.add(Ain_c, Ain_t)
-        Ain = Ain_c # dimensions = 1 * self.edim ???? IDK!
+        Ain = Ain_c # 
 
         Cin = Ain # Sharing the variable here.
+        
+        '''
+            Ain: None * mem_size * edim .... represents embedded memory.
+            u0 : None * 1 * edim
+        '''
+
+        # pdb.set_trace()
 
         # c_i = sum B_ij * u + T_B_i
         # Bin_c = tf.nn.embedding_lookup(self.B, self.context)
         # Bin_t = tf.nn.embedding_lookup(self.T_B, self.time)
         # Bin = tf.add(Bin_c, Bin_t)
         for h in xrange(self.nhop):
-            self.hid3dim = tf.reshape(self.hid[-1], [-1, 1, self.edim])
-            Aout = tf.matmul(self.hid3dim, Ain, adjoint_b=True)
-            Aout2dim = tf.reshape(Aout, [-1, self.mem_size])
-            P = tf.nn.softmax(Aout2dim)
-
-            probs3dim = tf.reshape(P, [-1, 1, self.mem_size])
-            Cout = tf.matmul(probs3dim, Cin)
-            Cout2dim = tf.reshape(Cout, [-1, self.edim])
+            u = self.hid[-1]
+            # Compute memory-u dot product.
             
-            pdb.set_trace()
+            Aout = tf.matmul()
+            P = tf.nn.softmax(Aout)
 
-            RCout2dim = tf.matmul(R, Cout2dim) # TODO Figure out the correct multiplication.
 
-            Dout = tf.add(self.hid[-1],RCout2dim)
         '''
         for h in xrange(self.nhop):
             self.hid3dim = tf.reshape(self.hid[-1], [-1, 1, self.edim])
