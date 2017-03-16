@@ -30,7 +30,7 @@ class MemN2N(object):
         if not os.path.isdir(self.checkpoint_dir):
             raise Exception(" [!] Directory %s not found" % self.checkpoint_dir)
 
-        self.input = tf.placeholder(tf.float32, [None, self.max_sentence_length], name="input")
+        self.input = tf.placeholder(tf.int32, [None, self.max_sentence_length], name="input")
         # self.time = tf.placeholder(tf.int32, [None, self.mem_size], name="time")
         # self.target = tf.placeholder(tf.float32, [self.batch_size, self.n_candidates], name="target")
         self.target = tf.placeholder(tf.float32, [None, self.n_candidates], name="target")
@@ -56,14 +56,15 @@ class MemN2N(object):
     def build_memory(self):
         self.global_step = tf.Variable(0, name="global_step")
 
-        nil_word_embedding = tf.zeros(size=(1, self.edim))
+        nil_word_embedding = tf.zeros([1, self.edim])
 
         # A=C.
         # self.A = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
         self.A = tf.concat(axis=0, values=[ nil_word_embedding, tf.random_normal([self.nwords - 1, self.edim], stddev=self.init_std) ])
-        self.C = self.A # Refer to the same thing for now.
+        # self.C = self.A Refer to the same thing for now.
 
         u0 = tf.reduce_sum(tf.nn.embedding_lookup(self.A, self.input), axis=1)
+
         self.hid.append(u0)
         
         # R
@@ -82,12 +83,12 @@ class MemN2N(object):
         # self.T_B = tf.Variable(tf.random_normal([self.mem_size, self.edim], stddev=self.init_std))
 
         # m_i = sum A_ij * x_ij + T_A_i
-        Ain_c = tf.redume_sum( tf.nn.embedding_lookup(self.A, self.context), axis=2 )
+        Ain_c = tf.reduce_sum( tf.nn.embedding_lookup(self.A, self.context), axis=2 )
         # Ain_t = tf.nn.embedding_lookup(self.T_A, self.time)
         # Ain = tf.add(Ain_c, Ain_t)
         Ain = Ain_c # 
 
-        Cin = Ain # Sharing the variable here.
+        # Cin = Ain # Sharing the variable here.
         
         '''
             Ain: None * mem_size * edim .... represents embedded memory.
@@ -101,13 +102,34 @@ class MemN2N(object):
         # Bin_t = tf.nn.embedding_lookup(self.T_B, self.time)
         # Bin = tf.add(Bin_c, Bin_t)
         for h in xrange(self.nhop):
-            u = self.hid[-1]
+            print('\nStarting hop ', h, '\n')
+            # pdb.set_trace()
+            u_in = self.hid[-1]
             # Compute memory-u dot product.
+
+            # hack to get around no reduce_dot
+            u_temp = tf.transpose(tf.expand_dims(u_in, -1), [0, 2, 1])
+            dotted = tf.reduce_sum(Ain * u_temp, 2)
+
+            # Calculate probabilities
+            probs = tf.nn.softmax(dotted)
             
-            Aout = tf.matmul()
-            P = tf.nn.softmax(Aout)
+            probs_temp = tf.transpose(tf.expand_dims(probs, -1), [0, 2, 1])
+            
+            c_temp = tf.transpose(Ain, [0, 2, 1])
 
+            o_h = tf.reduce_sum(c_temp * probs_temp, 2)
 
+            # pdb.set_trace()
+
+            ro_h = tf.matmul(o_h, self.R) # tf.matmul(self.R, o_h)
+            
+            # pdb.set_trace()
+
+            u_h = u_in + o_h
+
+            self.hid.append(u_h)
+        
         '''
         for h in xrange(self.nhop):
             self.hid3dim = tf.reshape(self.hid[-1], [-1, 1, self.edim])
@@ -136,8 +158,8 @@ class MemN2N(object):
         '''
     def build_model(self):
         self.build_memory()
-
-        self.W = tf.Variable(tf.random_normal([self.edim, self.nwords], stddev=self.init_std))
+        # IMPORTANT: self.hid[-1] is the thing that comes out of the last hop.
+        self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates], stddev=self.init_std))
         z = tf.matmul(self.hid[-1], self.W)
 
         self.loss = tf.nn.softmax_cross_entropy_with_logits(logits=z, labels=self.target)
@@ -145,7 +167,7 @@ class MemN2N(object):
         self.lr = tf.Variable(self.current_lr)
         self.opt = tf.train.GradientDescentOptimizer(self.lr)
 
-        params = [self.A, self.B, self.C, self.T_A, self.T_B, self.W]
+        params = [self.A, self.R, self.W]
         grads_and_vars = self.opt.compute_gradients(self.loss,params)
         clipped_grads_and_vars = [(tf.clip_by_norm(gv[0], self.max_grad_norm), gv[1]) \
                                    for gv in grads_and_vars]
