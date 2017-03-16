@@ -3,6 +3,8 @@ import math
 import random
 import numpy as np
 import tensorflow as tf
+import pdb
+
 from past.builtins import xrange
 
 class MemN2N(object):
@@ -57,8 +59,8 @@ class MemN2N(object):
         # R
         self.R = tf.Variable(tf.random_normal([self.edim, self.edim]), stddev=self.init_std)
     
-        # W
-        self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates]), stddev=self.init_std)
+        # W ... comes later.
+        # self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates]), stddev=self.init_std)
 
 
         # self.A = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
@@ -73,13 +75,30 @@ class MemN2N(object):
         Ain_c = tf.nn.embedding_lookup(self.A, self.context)
         # Ain_t = tf.nn.embedding_lookup(self.T_A, self.time)
         # Ain = tf.add(Ain_c, Ain_t)
-        Ain = Ain_c
-        
+        Ain = Ain_c # dimensions = 1 * self.edim ???? IDK!
+
+        Cin = Ain # Sharing the variable here.
+
         # c_i = sum B_ij * u + T_B_i
         # Bin_c = tf.nn.embedding_lookup(self.B, self.context)
         # Bin_t = tf.nn.embedding_lookup(self.T_B, self.time)
         # Bin = tf.add(Bin_c, Bin_t)
+        for h in xrange(self.nhop):
+            self.hid3dim = tf.reshape(self.hid[-1], [-1, 1, self.edim])
+            Aout = tf.matmul(self.hid3dim, Ain, adjoint_b=True)
+            Aout2dim = tf.reshape(Aout, [-1, self.mem_size])
+            P = tf.nn.softmax(Aout2dim)
 
+            probs3dim = tf.reshape(P, [-1, 1, self.mem_size])
+            Cout = tf.matmul(probs3dim, Cin)
+            Cout2dim = tf.reshape(Cout, [-1, self.edim])
+            
+            pdb.set_trace()
+
+            RCout2dim = tf.matmul(R, Cout2dim) # TODO Figure out the correct multiplication.
+
+            Dout = tf.add(self.hid[-1],RCout2dim)
+        '''
         for h in xrange(self.nhop):
             self.hid3dim = tf.reshape(self.hid[-1], [-1, 1, self.edim])
             Aout = tf.matmul(self.hid3dim, Ain, adjoint_b=True)
@@ -104,7 +123,7 @@ class MemN2N(object):
                 G = tf.slice(Dout, [0, self.lindim], [self.batch_size, self.edim-self.lindim])
                 K = tf.nn.relu(G)
                 self.hid.append(tf.concat(axis=1, values=[F, K]))
-
+        '''
     def build_model(self):
         self.build_memory()
 
