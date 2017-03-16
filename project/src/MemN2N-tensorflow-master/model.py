@@ -126,7 +126,7 @@ class MemN2N(object):
             
             # pdb.set_trace()
 
-            u_h = u_in + o_h
+            u_h = u_in + ro_h
 
             self.hid.append(u_h)
         
@@ -170,7 +170,8 @@ class MemN2N(object):
         params = [self.A, self.R, self.W]
         # pdb.set_trace()
         grads_and_vars = self.opt.compute_gradients(self.loss,var_list=params)
-        # clipped_grads_and_vars = [(tf.clip_by_norm(gv[0], self.max_grad_norm), gv[1]) for gv in grads_and_vars]
+
+        clipped_grads_and_vars = [(tf.clip_by_norm(gv[0], self.max_grad_norm), gv[1]) for gv in grads_and_vars]
 
         inc = self.global_step.assign_add(1)
         with tf.control_dependencies([inc]):
@@ -183,7 +184,8 @@ class MemN2N(object):
     def train(self, data):
         N = int(math.ceil(float(len(data[0])) / self.batch_size))
         cost = 0
-
+        # pdb.set_trace()
+        
         x = np.ndarray([self.batch_size, self.max_sentence_length], dtype=np.float32)
         # time = np.ndarray([self.batch_size, self.mem_size], dtype=np.int32)
         target = np.zeros([self.batch_size, self.n_candidates]) # one-hot-encoded
@@ -234,7 +236,8 @@ class MemN2N(object):
             cost += np.sum(loss)
 
         if self.show: bar.finish()
-        return cost/N/self.batch_size
+        pdb.set_trace()
+        return cost/(N*self.batch_size)
 
     def test(self, data, label='Test'):
         N = int(math.ceil(float(len(data[0])) / self.batch_size))
@@ -282,7 +285,7 @@ class MemN2N(object):
             cost += np.sum(loss)
 
         if self.show: bar.finish()
-        return cost/N/self.batch_size
+        return cost/(N*self.batch_size)
 
     def run(self, train_data, test_data):
         if not self.is_test:
