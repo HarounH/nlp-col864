@@ -13,7 +13,7 @@ pp = pprint.PrettyPrinter()
 flags = tf.app.flags
 
 flags.DEFINE_integer("edim", 150, "internal state dimension [150]")
-flags.DEFINE_integer("lindim", 10, "linear part of the state [75]")
+flags.DEFINE_integer("lindim", 75, "linear part of the state [75]")
 flags.DEFINE_integer("nhop", 6, "number of hops [6]")
 flags.DEFINE_integer("mem_size", 100, "memory size [100]")
 flags.DEFINE_integer("batch_size", 128, "batch size to use during training [128]")
@@ -30,6 +30,7 @@ flags.DEFINE_boolean("is_test", False, "True for testing, False for Training [Fa
 flags.DEFINE_boolean("show", False, "print progress [False]")
 flags.DEFINE_string("candidate_filename","dialog-babi-task6-dstc2-candidates.txt","file containing valid candidates")
 flags.DEFINE_integer("n_candidates", 1, "Number of candidates to pick from")
+
 FLAGS = flags.FLAGS
 
 def main(_):
@@ -51,7 +52,8 @@ def main(_):
 
 	vocab = sorted(reduce(lambda x, y: x | y, (set(list(chain.from_iterable(s)) + q) for s, q, a in raw_data)))
 	print(len(vocab))
-	word2idx = dict((c, i + 1) for i, c in enumerate(vocab))
+	extra_words = FLAGS.mem_size-1 + 2 # One for each position and one for system, one for user.
+	word2idx = dict((c, i + extra_words) for i, c in enumerate(vocab,0))
 
 	idx=1
 	candidate2idx={}
@@ -60,7 +62,7 @@ def main(_):
 			nid, line = line.split(' ', 1)
 			candidate2idx[line.rstrip()]=idx
 			idx=idx+1
-			
+
 	FLAGS.n_candidates = len(candidate2idx)
 
 
@@ -68,7 +70,7 @@ def main(_):
 	mean_story_size = int(np.mean([ len(s) for s, _, _ in raw_data ]))
 	sentence_size = max(map(len, chain.from_iterable(s for s, _, _ in raw_data)))
 	query_size = max(map(len, (q for _, q, _ in raw_data)))
-	n_memory_cells = min(FLAGS.lindim, max_story_size)
+	n_memory_cells = min(FLAGS.mem_size, max_story_size)
 	answer_size = len(candidate2idx) # +1 TODO ... do we need +1???
 
 	# We now have the candidates and everything else.
