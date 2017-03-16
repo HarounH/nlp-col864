@@ -65,7 +65,7 @@ def main(_):
 					4 ...: position
 					extra_words...: vocab
 	'''
-	idx=1
+	idx=0
 	candidate2idx={}
 	with open('%s/%s' % (FLAGS.data_dir, FLAGS.candidate_filename)) as cFile:
 		for line in cFile.readlines():

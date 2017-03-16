@@ -184,33 +184,44 @@ class MemN2N(object):
         N = int(math.ceil(len(data) / self.batch_size))
         cost = 0
 
-        x = np.ndarray([self.batch_size, self.edim], dtype=np.float32)
-        time = np.ndarray([self.batch_size, self.mem_size], dtype=np.int32)
-        target = np.zeros([self.batch_size, self.nwords]) # one-hot-encoded
-        context = np.ndarray([self.batch_size, self.mem_size])
+        x = np.ndarray([self.batch_size, self.max_sentence_length], dtype=np.float32)
+        # time = np.ndarray([self.batch_size, self.mem_size], dtype=np.int32)
+        target = np.zeros([self.batch_size, self.n_candidates]) # one-hot-encoded
+        context = np.ndarray([self.batch_size, self.mem_size, self.max_sentence_length])
 
-        x.fill(self.init_hid)
-        for t in xrange(self.mem_size):
-            time[:,t].fill(t)
+        # x.fill(self.init_hid) ... sad
+        # for t in xrange(self.mem_size):
+        #     time[:,t].fill(t)
 
         if self.show:
             from utils import ProgressBar
             bar = ProgressBar('Train', max=N)
 
+        # shuffle data.
+        # indices = list(range(0, len(data[0])))
+        # random.shuffle(indices)
+        # for i in range(0, len(data)):
+        #     data[i] = data[i][indices]
+
         for idx in xrange(N):
             if self.show: bar.next()
             target.fill(0)
-            for b in xrange(self.batch_size):
-                m = random.randrange(self.mem_size, len(data))
-                target[b][data[m]] = 1
-                context[b] = data[m - self.mem_size:m]
 
+            for b in xrange(self.batch_size):
+                indexIntoTrainingData = idx*self.batch_size + b
+
+                pdb.set_trace()
+                # m = random.randrange(self.mem_size, len(data))
+                x[b] = data[1][indexIntoTrainingData]
+                target[b] = data[2][indexIntoTrainingData]
+                context[b] = data[0][indexIntoTrainingData]
+                
             _, loss, self.step = self.sess.run([self.optim,
                                                 self.loss,
                                                 self.global_step],
                                                 feed_dict={
                                                     self.input: x,
-                                                    self.time: time,
+                                                    # self.time: time,
                                                     self.target: target,
                                                     self.context: context})
             cost += np.sum(loss)
@@ -240,6 +251,8 @@ class MemN2N(object):
             if self.show: bar.next()
             target.fill(0)
             for b in xrange(self.batch_size):
+                
+
                 target[b][data[m]] = 1
                 context[b] = data[m - self.mem_size:m]
                 m += 1
