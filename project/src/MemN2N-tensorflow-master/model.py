@@ -49,7 +49,7 @@ class MemN2N(object):
         self.step = None
         self.optim = None
 
-        self.sess = sess
+        self.sess = None
         self.log_loss = []
         self.log_perp = []
 
@@ -60,7 +60,7 @@ class MemN2N(object):
 
         # A=C.
         # self.A = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
-        self.A = tf.concat(axis=0, values=[ nil_word_embedding, tf.random_normal([self.nwords - 1, self.edim], stddev=self.init_std) ])
+        self.A = tf.Variable( tf.concat(axis=0, values=[ nil_word_embedding, tf.random_normal([self.nwords - 1, self.edim], stddev=self.init_std) ]) , name="good_catch")
         # self.C = self.A Refer to the same thing for now.
 
         u0 = tf.reduce_sum(tf.nn.embedding_lookup(self.A, self.input), axis=1)
@@ -161,20 +161,21 @@ class MemN2N(object):
         # IMPORTANT: self.hid[-1] is the thing that comes out of the last hop.
         self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates], stddev=self.init_std))
         z = tf.matmul(self.hid[-1], self.W)
-
+        print(z)
         self.loss = tf.nn.softmax_cross_entropy_with_logits(logits=z, labels=self.target)
 
         self.lr = tf.Variable(self.current_lr)
         self.opt = tf.train.GradientDescentOptimizer(self.lr)
 
         params = [self.A, self.R, self.W]
-        grads_and_vars = self.opt.compute_gradients(self.loss,params)
-        clipped_grads_and_vars = [(tf.clip_by_norm(gv[0], self.max_grad_norm), gv[1]) \
-                                   for gv in grads_and_vars]
+        # pdb.set_trace()
+        grads_and_vars = self.opt.compute_gradients(self.loss,var_list=params)
+        # clipped_grads_and_vars = [(tf.clip_by_norm(gv[0], self.max_grad_norm), gv[1]) for gv in grads_and_vars]
 
         inc = self.global_step.assign_add(1)
         with tf.control_dependencies([inc]):
-            self.optim = self.opt.apply_gradients(clipped_grads_and_vars)
+            # self.optim = self.opt.apply_gradients(clipped_grads_and_vars)
+            self.optim = self.opt.apply_gradients(grads_and_vars)
 
         tf.global_variables_initializer().run()
         self.saver = tf.train.Saver()

@@ -25,7 +25,8 @@ flags.DEFINE_float("max_grad_norm", 50, "clip gradients to this norm [50]")
 flags.DEFINE_string("data_dir", "../weston_baseline/data/dialog-bAbI-tasks", "data directory [data]")
 flags.DEFINE_string("checkpoint_dir", "checkpoints", "checkpoint directory [checkpoints]")
 # flags.DEFINE_string("data_name", "ptb", "data set name [ptb]")
-flags.DEFINE_string("data_name", "dialog-babi-task6-dstc2", "data set name [dialog-babi-task6-dstc2]")
+# flags.DEFINE_string("data_name", "dialog-babi-task6-dstc2", "data set name [dialog-babi-task6-dstc2]")
+flags.DEFINE_string("data_name", "small", "data set name [dialog-babi-task6-dstc2]")
 flags.DEFINE_boolean("is_test", False, "True for testing, False for Training [False]")
 flags.DEFINE_boolean("show", False, "print progress [False]")
 flags.DEFINE_string("candidate_filename","dialog-babi-task6-dstc2-candidates.txt","file containing valid candidates")
@@ -112,7 +113,7 @@ def main(_):
 		if FLAGS.is_test:
 			model.run(valid_data, test_data)
 		else:
-			model.run(train_data, valid_data)
+			model.run(train_data, val_data)
 
 if __name__ == '__main__':
 	tf.app.run()
