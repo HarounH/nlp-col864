@@ -49,7 +49,7 @@ class MemN2N(object):
         self.step = None
         self.optim = None
 
-        self.sess = None
+        self.sess = sess
         self.log_loss = []
         self.log_perp = []
 
@@ -60,7 +60,7 @@ class MemN2N(object):
 
         # A=C.
         # self.A = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
-        self.A = tf.Variable( tf.concat(axis=0, values=[ nil_word_embedding, tf.random_normal([self.nwords - 1, self.edim], stddev=self.init_std) ]) , name="good_catch")
+        self.A = tf.Variable( tf.concat(axis=0, values=[ nil_word_embedding, tf.random_normal([self.nwords - 1, self.edim], stddev=self.init_std) ]) , name="A")
         # self.C = self.A Refer to the same thing for now.
 
         u0 = tf.reduce_sum(tf.nn.embedding_lookup(self.A, self.input), axis=1)
@@ -68,7 +68,7 @@ class MemN2N(object):
         self.hid.append(u0)
         
         # R
-        self.R = tf.Variable(tf.random_normal([self.edim, self.edim], stddev=self.init_std))
+        self.R = tf.Variable(tf.random_normal([self.edim, self.edim], stddev=self.init_std), name="R")
     
         # W ... comes later.
         # self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates]), stddev=self.init_std)
@@ -159,7 +159,7 @@ class MemN2N(object):
     def build_model(self):
         self.build_memory()
         # IMPORTANT: self.hid[-1] is the thing that comes out of the last hop.
-        self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates], stddev=self.init_std))
+        self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates], stddev=self.init_std), name="W")
         z = tf.matmul(self.hid[-1], self.W)
         print(z)
         self.loss = tf.nn.softmax_cross_entropy_with_logits(logits=z, labels=self.target)
@@ -206,15 +206,22 @@ class MemN2N(object):
         for idx in xrange(N):
             if self.show: bar.next()
             target.fill(0)
-
+            x.fill(0)
+            context.fill(0)
             for b in xrange(self.batch_size):
-                indexIntoTrainingData = idx*self.batch_size + b
+                indexIntoData = idx*self.batch_size + b
+                if(indexIntoData >= len(data[0])):
+                    break
 
-                pdb.set_trace()
+                # pdb.set_trace()
                 # m = random.randrange(self.mem_size, len(data))
-                x[b] = data[1][indexIntoTrainingData]
-                target[b] = data[2][indexIntoTrainingData]
-                context[b] = data[0][indexIntoTrainingData]
+                x[b] = data[1][indexIntoData]
+
+                # pdb.set_trace()
+                target[b] = data[2][indexIntoData]
+
+                # pdb.set_trace()
+                context[b] = data[0][indexIntoData]
                 
             _, loss, self.step = self.sess.run([self.optim,
                                                 self.loss,
@@ -233,35 +240,43 @@ class MemN2N(object):
         N = int(math.ceil(len(data) / self.batch_size))
         cost = 0
 
-        x = np.ndarray([self.batch_size, self.edim], dtype=np.float32)
-        time = np.ndarray([self.batch_size, self.mem_size], dtype=np.int32)
-        target = np.zeros([self.batch_size, self.nwords]) # one-hot-encoded
-        context = np.ndarray([self.batch_size, self.mem_size])
+        x = np.ndarray([self.batch_size, self.max_sentence_length], dtype=np.float32)
+        # time = np.ndarray([self.batch_size, self.mem_size], dtype=np.int32)
+        target = np.zeros([self.batch_size, self.n_candidates]) # one-hot-encoded
+        context = np.ndarray([self.batch_size, self.mem_size, self.max_sentence_length])
 
-        x.fill(self.init_hid)
-        for t in xrange(self.mem_size):
-            time[:,t].fill(t)
+        # x.fill(self.init_hid)
+        # for t in xrange(self.mem_size):
+        #     time[:,t].fill(t)
 
         if self.show:
             from utils import ProgressBar
             bar = ProgressBar(label, max=N)
 
         m = self.mem_size
+
         for idx in xrange(N):
             if self.show: bar.next()
             target.fill(0)
+            x.fill(0)
+            context.fill(0)
             for b in xrange(self.batch_size):
+                indexIntoData = idx*self.batch_size + b
+                if(indexIntoData >= len(data[0])):
+                    break
+
+                # pdb.set_trace()
+                # m = random.randrange(self.mem_size, len(data))
+                x[b] = data[1][indexIntoData]
+
+                # pdb.set_trace()
+                target[b] = data[2][indexIntoData]
+
+                # pdb.set_trace()
+                context[b] = data[0][indexIntoData]
                 
-
-                target[b][data[m]] = 1
-                context[b] = data[m - self.mem_size:m]
-                m += 1
-
-                if m >= len(data):
-                    m = self.mem_size
-
             loss = self.sess.run([self.loss], feed_dict={self.input: x,
-                                                         self.time: time,
+                                                         # self.time: time,
                                                          self.target: target,
                                                          self.context: context})
             cost += np.sum(loss)

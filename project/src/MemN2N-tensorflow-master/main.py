@@ -86,13 +86,13 @@ def main(_):
 	FLAGS.max_sentence_length = max_sentence_length
 	
 
-	n_memory_cells = min(FLAGS.mem_size, max_story_size)
+	n_memory_cells = FLAGS.mem_size #, max_story_size
 	
 	FLAGS.n_candidates = len(candidate2idx)
 
 	# We now have the candidates and everything else.
 	idx2word = dict(zip(word2idx.values(), word2idx.keys()))
-	FLAGS.nwords = len(word2idx)
+	FLAGS.nwords = len(word2idx) + extra_words
 
 
 

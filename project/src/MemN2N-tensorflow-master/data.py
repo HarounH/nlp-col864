@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import os
 import re
 import numpy as np
+import pdb
 from collections import Counter
 
 def read_data(fname, count, word2idx):
@@ -72,34 +73,35 @@ def vectorize_data(raw_data, max_sentence_length, n_memory_cells, word2idx, cand
 	answers = []
 
 	for context, query, answer in raw_data:
-		c = [] # vectorised context
+		cc = [] # vectorised context
 		# q = [] # vectorised query
 		# a = [] # vectorised answer
 
 		# sentence is a list of words.
 		for i, sentence in enumerate(context, 1): # What is enumerate(context,1)?? :P
 			padding_size = max(0, max_sentence_length - len(sentence)) 
-			c.append([ word2idx[w] for w in sentence ] + [0]*padding_size)
-			c[i-1][-1] = 2 + i%2 # utterer Either system or user.... not 0 because 0 means empty for me.
+			cc.append([ word2idx[w] for w in sentence ] + [0]*padding_size )
+			cc[i-1][-1] = 2 + i%2 # utterer Either system or user.... not 0 because 0 means empty for me.
 
 
 		# Ignore really old sentences that don't fit in memory.
-		c = c[::-1][:n_memory_cells][::-1]
+		cc = cc[::-1][:n_memory_cells][::-1]
 
-		for i in range(len(c)):
-			c[i][-2] = 4 + (n_memory_cells - i - 1) # Range from 1 to n_memory_cells 
+		for i in range(len(cc)):
+			cc[i][-2] = 4 + (n_memory_cells - i - 1) # Range from 1 to n_memory_cells 
 
-		n_empty_cells = max(0, n_memory_cells - len(c))
+		n_empty_cells = max(0, n_memory_cells - len(cc))
 		for _ in range(n_empty_cells):
-			c.append([0]*max_sentence_length) # Empty memory.
-
+			cc.append([0]*max_sentence_length) # Empty memory.
+		# pdb.set_trace()
+		
 		lq = max(0, max_sentence_length - len(query)) # >=0 
 		q = [word2idx[w] for w in query] + [0] * lq # Padded with 0s. 
 
-		a = np.zeros(len(candidate2idx) + 1) # 0 is reserved for nil word
+		a = np.zeros(len(candidate2idx)) # 0 is NOT reserved for nil word
 		a[candidate2idx[answer]] = 1
 
-		contexts.append(c)
+		contexts.append(cc)
 		queries.append(q)
 		answers.append(a)
 
