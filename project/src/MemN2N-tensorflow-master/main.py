@@ -28,7 +28,7 @@ flags.DEFINE_string("checkpoint_dir", "checkpoints", "checkpoint directory [chec
 # flags.DEFINE_string("data_name", "dialog-babi-task6-dstc2", "data set name [dialog-babi-task6-dstc2]")
 flags.DEFINE_string("data_name", "small", "data set name [dialog-babi-task6-dstc2]")
 flags.DEFINE_boolean("is_test", False, "True for testing, False for Training [False]")
-flags.DEFINE_boolean("show", False, "print progress [False]")
+flags.DEFINE_boolean("show", True, "print progress [False]")
 flags.DEFINE_string("candidate_filename","dialog-babi-task6-dstc2-candidates.txt","file containing valid candidates")
 flags.DEFINE_integer("n_candidates", 1, "Number of candidates to pick from")
 flags.DEFINE_integer("max_sentence_length", 0, "Maximum number of words in a sentence + 2")

@@ -51,7 +51,7 @@ class MemN2N(object):
 
         self.sess = sess
         self.log_loss = []
-        self.log_perp = []
+        #self.log_perp = []
 
     def build_memory(self):
         self.global_step = tf.Variable(0, name="global_step")
@@ -181,7 +181,7 @@ class MemN2N(object):
         self.saver = tf.train.Saver()
 
     def train(self, data):
-        N = int(math.ceil(len(data) / self.batch_size))
+        N = int(math.ceil(float(len(data[0])) / self.batch_size))
         cost = 0
 
         x = np.ndarray([self.batch_size, self.max_sentence_length], dtype=np.float32)
@@ -237,7 +237,7 @@ class MemN2N(object):
         return cost/N/self.batch_size
 
     def test(self, data, label='Test'):
-        N = int(math.ceil(len(data) / self.batch_size))
+        N = int(math.ceil(float(len(data[0])) / self.batch_size))
         cost = 0
 
         x = np.ndarray([self.batch_size, self.max_sentence_length], dtype=np.float32)
@@ -292,13 +292,13 @@ class MemN2N(object):
 
                 # Logging
                 self.log_loss.append([train_loss, test_loss])
-                self.log_perp.append([math.exp(train_loss), math.exp(test_loss)])
+                #self.log_perp.append([math.exp(train_loss), math.exp(test_loss)])
 
                 state = {
-                    'perplexity': math.exp(train_loss),
+                    'train_loss': train_loss,
                     'epoch': idx,
                     'learning_rate': self.current_lr,
-                    'valid_perplexity': math.exp(test_loss)
+                    'test_loss': test_loss
                 }
                 print(state)
 
