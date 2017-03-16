@@ -80,7 +80,7 @@ def vectorize_data(raw_data, max_sentence_length, n_memory_cells, word2idx, cand
 		for i, sentence in enumerate(context, 1): # What is enumerate(context,1)?? :P
 			padding_size = max(0, max_sentence_length - len(sentence)) 
 			c.append([ word2idx[w] for w in sentence ] + [0]*padding_size)
-			c[-1] = 1 + i%2 # utterer Either system or user.... not 0 because 0 means empty for me.
+			c[i-1][-1] = 1 + i%2 # utterer Either system or user.... not 0 because 0 means empty for me.
 
 
 		# Ignore really old sentences that don't fit in memory.
@@ -95,7 +95,7 @@ def vectorize_data(raw_data, max_sentence_length, n_memory_cells, word2idx, cand
 		lq = max(0, max_sentence_length - len(query)) # >=0 
 		q = [word2idx[w] for w in query] + [0] * lq # Padded with 0s. 
 
-		a = np.zeros(len(candidate2idx)) # 0 is reserved for nil word
+		a = np.zeros(len(candidate2idx) + 1) # 0 is reserved for nil word
 		a[candidate2idx[answer]] = 1
 
 		contexts.append(c)

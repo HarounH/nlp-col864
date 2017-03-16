@@ -22,6 +22,8 @@ class MemN2N(object):
         self.is_test = config.is_test
         self.checkpoint_dir = config.checkpoint_dir
 
+        self.n_candidates = config.n_candidates
+
         if not os.path.isdir(self.checkpoint_dir):
             raise Exception(" [!] Directory %s not found" % self.checkpoint_dir)
 
@@ -48,9 +50,20 @@ class MemN2N(object):
     def build_memory(self):
         self.global_step = tf.Variable(0, name="global_step")
 
+        # A=C.
         self.A = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
-        self.B = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
-        self.C = tf.Variable(tf.random_normal([self.edim, self.edim], stddev=self.init_std))
+        self.C = self.A # Refer to the same thing for now.
+
+        # R
+        self.R = tf.Variable(tf.random_normal([self.edim, self.edim]), stddev=self.init_std)
+    
+        # W
+        self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates]), stddev=self.init_std)
+
+
+        # self.A = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
+        # self.B = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
+        # self.C = tf.Variable(tf.random_normal([self.edim, self.edim], stddev=self.init_std))
 
         # Temporal Encoding
         self.T_A = tf.Variable(tf.random_normal([self.mem_size, self.edim], stddev=self.init_std))

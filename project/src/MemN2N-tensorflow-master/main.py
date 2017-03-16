@@ -29,6 +29,7 @@ flags.DEFINE_string("data_name", "dialog-babi-task6-dstc2", "data set name [dial
 flags.DEFINE_boolean("is_test", False, "True for testing, False for Training [False]")
 flags.DEFINE_boolean("show", False, "print progress [False]")
 flags.DEFINE_string("candidate_filename","dialog-babi-task6-dstc2-candidates.txt","file containing valid candidates")
+flags.DEFINE_integer("n_candidates", 1, "Number of candidates to pick from")
 FLAGS = flags.FLAGS
 
 def main(_):
@@ -59,6 +60,9 @@ def main(_):
 			nid, line = line.split(' ', 1)
 			candidate2idx[line.rstrip()]=idx
 			idx=idx+1
+			
+	FLAGS.n_candidates = len(candidate2idx)
+
 
 	max_story_size = max(map(len, (s for s, _, _ in raw_data)))
 	mean_story_size = int(np.mean([ len(s) for s, _, _ in raw_data ]))
