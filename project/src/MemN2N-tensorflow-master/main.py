@@ -52,9 +52,18 @@ def main(_):
 
 	vocab = sorted(reduce(lambda x, y: x | y, (set(list(chain.from_iterable(s)) + q) for s, q, a in raw_data)))
 	print(len(vocab))
-	extra_words = FLAGS.mem_size-1 + 2 # One for each position and one for system, one for user.
+	extra_words = 1 + 1 + FLAGS.mem_size-1 + 2 # One for OOVs, One for each position and one for system, one for user.
 	word2idx = dict((c, i + extra_words) for i, c in enumerate(vocab,0))
-
+	'''
+		INDEXING CONVENTION!!!!!
+		word2idx 
+		idx2word - 0: nil
+					1: OOV
+					2: system/user
+					3: user/system ... not sure of order
+					4 ...: position
+					extra_words...: vocab
+	'''
 	idx=1
 	candidate2idx={}
 	with open('%s/%s' % (FLAGS.data_dir, FLAGS.candidate_filename)) as cFile:

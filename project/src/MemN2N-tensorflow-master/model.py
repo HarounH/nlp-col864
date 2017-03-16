@@ -66,14 +66,15 @@ class MemN2N(object):
         # self.C = tf.Variable(tf.random_normal([self.edim, self.edim], stddev=self.init_std))
 
         # Temporal Encoding
-        self.T_A = tf.Variable(tf.random_normal([self.mem_size, self.edim], stddev=self.init_std))
+        # self.T_A = tf.Variable(tf.random_normal([self.mem_size, self.edim], stddev=self.init_std))
         # self.T_B = tf.Variable(tf.random_normal([self.mem_size, self.edim], stddev=self.init_std))
 
         # m_i = sum A_ij * x_ij + T_A_i
         Ain_c = tf.nn.embedding_lookup(self.A, self.context)
-        Ain_t = tf.nn.embedding_lookup(self.T_A, self.time)
-        Ain = tf.add(Ain_c, Ain_t)
-
+        # Ain_t = tf.nn.embedding_lookup(self.T_A, self.time)
+        # Ain = tf.add(Ain_c, Ain_t)
+        Ain = Ain_c
+        
         # c_i = sum B_ij * u + T_B_i
         # Bin_c = tf.nn.embedding_lookup(self.B, self.context)
         # Bin_t = tf.nn.embedding_lookup(self.T_B, self.time)

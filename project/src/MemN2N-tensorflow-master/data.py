@@ -80,14 +80,14 @@ def vectorize_data(raw_data, max_sentence_length, n_memory_cells, word2idx, cand
 		for i, sentence in enumerate(context, 1): # What is enumerate(context,1)?? :P
 			padding_size = max(0, max_sentence_length - len(sentence)) 
 			c.append([ word2idx[w] for w in sentence ] + [0]*padding_size)
-			c[i-1][-1] = i%2 # utterer Either system or user.... not 0 because 0 means empty for me.
+			c[i-1][-1] = 2 + i%2 # utterer Either system or user.... not 0 because 0 means empty for me.
 
 
 		# Ignore really old sentences that don't fit in memory.
 		c = c[::-1][:n_memory_cells][::-1]
 
 		for i in range(len(c)):
-			c[i][-2] = 2 + (n_memory_cells - i - 1) # Range from 1 to n_memory_cells 
+			c[i][-2] = 4 + (n_memory_cells - i - 1) # Range from 1 to n_memory_cells 
 
 		n_empty_cells = max(0, n_memory_cells - len(c))
 		for _ in range(n_empty_cells):
