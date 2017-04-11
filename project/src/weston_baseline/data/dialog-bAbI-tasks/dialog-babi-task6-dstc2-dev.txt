@@ -1,8 +1,8 @@
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
 2 expensive restaurant in the south part of town	What kind of food would you like?
-3 any	the good luck chinese food takeaway is a nice restaurant in the south of town serving chinese food
-4 address	Sure , the good luck chinese food takeaway is on the_good_luck_chinese_food_takeaway_address
-5 type of food	the good luck chinese food takeaway is a nice restaurant in the south of town in the expensive price range
+3 any	the_good_luck_chinese_food_takeaway is a nice restaurant in the south of town serving chinese food
+4 address	Sure , the_good_luck_chinese_food_takeaway is on the_good_luck_chinese_food_takeaway_address
+5 type of food	the_good_luck_chinese_food_takeaway is a nice restaurant in the south of town in the expensive price range
 6 thank you good bye	 you are welcome
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
@@ -1695,9 +1695,9 @@
 3 brazilian food	api_call brazilian R_location moderate
 4 api_call no result
 5 <SILENCE>	Sorry there is no brazilian restaurant in the moderate price range
-6 gastropub	the cow pizza kitchen and bar is a great restaurant serving gastropub food and it is in the moderate price range
-7 address	Sure , the cow pizza kitchen and bar is on the_cow_pizza_kitchen_and_bar_address
-8 phone number	The phone number of the cow pizza kitchen and bar is the_cow_pizza_kitchen_and_bar_phone
+6 gastropub	the_cow_pizza_kitchen_and_bar is a great restaurant serving gastropub food and it is in the moderate price range
+7 address	Sure , the_cow_pizza_kitchen_and_bar is on the_cow_pizza_kitchen_and_bar_address
+8 phone number	The phone number of the_cow_pizza_kitchen_and_bar is the_cow_pizza_kitchen_and_bar_phone
 9 location	Can I help you with anything else?
 10 thank you good bye	 you are welcome
 
@@ -4190,8 +4190,8 @@
 205 the_nirala R_address the_nirala_address
 206 the_nirala R_price moderate
 207 the_nirala R_rating 3
-208 <SILENCE>	pizza_express Fen Ditton is a nice restaurant in the centre of town in the moderate price range
-209 hello	The price range at pizza_express Fen Ditton is moderate .
+208 <SILENCE>	pizza_express_fen_ditton is a nice restaurant in the centre of town in the moderate price range
+209 hello	The price range at pizza_express_fen_ditton is moderate .
 210 serve hello food	Sorry there is no halal restaurant in the moderate price range
 211 how about asian_oriental type of food	yippee_noodle_bar is a nice restaurant in the centre of town serving asian_oriental food
 212 price range	Sure , yippee_noodle_bar is on yippee_noodle_bar_address
@@ -5994,11 +5994,11 @@
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
 2 <SILENCE>	Would you like something in the cheap , moderate , or expensive price range?
-3 <SILENCE>	the cow pizza kitchen and bar is a great restaurant
-4 <SILENCE>	Sure , the cow pizza kitchen and bar is on the_cow_pizza_kitchen_and_bar_address
-5 <SILENCE>	the cow pizza kitchen and bar is a great restaurant
-6 moroccan food	The post code of the cow pizza kitchen and bar is the_cow_pizza_kitchen_and_bar_post_code
-7 <SILENCE>	the cow pizza kitchen and bar is a great restaurant
+3 <SILENCE>	the_cow_pizza_kitchen_and_bar is a great restaurant
+4 <SILENCE>	Sure , the_cow_pizza_kitchen_and_bar is on the_cow_pizza_kitchen_and_bar_address
+5 <SILENCE>	the_cow_pizza_kitchen_and_bar is a great restaurant
+6 moroccan food	The post code of the_cow_pizza_kitchen_and_bar is the_cow_pizza_kitchen_and_bar_post_code
+7 <SILENCE>	the_cow_pizza_kitchen_and_bar is a great restaurant
 8 what is it by	 you are welcome
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
@@ -7961,9 +7961,9 @@
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
 2 <SILENCE>	What kind of food would you like?
-3 um	the good luck chinese food takeaway is a nice restaurant in the south of town in the expensive price range
-4 whats the address and phone number	The phone number of the good luck chinese food takeaway is the_good_luck_chinese_food_takeaway_phone
-5 is it expensive	the good luck chinese food takeaway is in the expensive price range
+3 um	the_good_luck_chinese_food_takeaway is a nice restaurant in the south of town in the expensive price range
+4 whats the address and phone number	The phone number of the_good_luck_chinese_food_takeaway is the_good_luck_chinese_food_takeaway_phone
+5 is it expensive	the_good_luck_chinese_food_takeaway is in the expensive price range
 6 thank you good bye	 you are welcome
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
@@ -11044,9 +11044,9 @@
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
 2 chinese restaurant in the south part of town	What kind of food would you like?
-3 chinese	the good luck chinese food takeaway is a nice restaurant in the south of town serving chinese food
-4 can i get the phone number	The phone number of the good luck chinese food takeaway is the_good_luck_chinese_food_takeaway_phone
-5 can i get the price range	Sure , the good luck chinese food takeaway is on the_good_luck_chinese_food_takeaway_address
+3 chinese	the_good_luck_chinese_food_takeaway is a nice restaurant in the south of town serving chinese food
+4 can i get the phone number	The phone number of the_good_luck_chinese_food_takeaway is the_good_luck_chinese_food_takeaway_phone
+5 can i get the price range	Sure , the_good_luck_chinese_food_takeaway is on the_good_luck_chinese_food_takeaway_address
 6 thank you good bye	 you are welcome
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
@@ -12532,8 +12532,8 @@
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
 2 im looking for an expensive restaurant	What kind of food would you like?
 3 um that serves	What part of town do you have in mind?
-4 im looking for an expensive restaurant that serves turkish food	The price range at the good luck chinese food takeaway is expensive .
-5 whats the post code	The post code of the good luck chinese food takeaway is the_good_luck_chinese_food_takeaway_post_code
+4 im looking for an expensive restaurant that serves turkish food	The price range at the_good_luck_chinese_food_takeaway is expensive .
+5 whats the post code	The post code of the_good_luck_chinese_food_takeaway is the_good_luck_chinese_food_takeaway_post_code
 6 thank you good bye	 you are welcome
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
@@ -18007,7 +18007,7 @@
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
 2 im looking for an expensive restaurant in the south part of town	What part of town do you have in mind?
 3 <SILENCE>	You are looking for a restaurant is that right?
-4 is there	The price range at the good luck chinese food takeaway is expensive .
+4 is there	The price range at the_good_luck_chinese_food_takeaway is expensive .
 5 is there any other restaurant	api_call R_cuisine R_location expensive
 6 frankie_and_bennys R_post_code frankie_and_bennys_post_code
 7 frankie_and_bennys R_cuisine italian
@@ -18853,9 +18853,9 @@
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
 2 expensive restaurant in the south part of town	What kind of food would you like?
-3 dont care	the good luck chinese food takeaway is a nice restaurant in the south of town serving chinese food
-4 price range	the good luck chinese food takeaway is in the expensive price range
-5 what is the phone number and post code	The phone number of the good luck chinese food takeaway is the_good_luck_chinese_food_takeaway_phone
+3 dont care	the_good_luck_chinese_food_takeaway is a nice restaurant in the south of town serving chinese food
+4 price range	the_good_luck_chinese_food_takeaway is in the expensive price range
+5 what is the phone number and post code	The phone number of the_good_luck_chinese_food_takeaway is the_good_luck_chinese_food_takeaway_phone
 6 thank you good bye	 you are welcome
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
@@ -25702,7 +25702,7 @@
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
 2 <SILENCE>	What part of town do you have in mind?
 3 downtown	You are looking for a restaurant is that right?
-4 yes italian food	the good luck chinese food takeaway is a nice restaurant in the south of town in the expensive price range
+4 yes italian food	the_good_luck_chinese_food_takeaway is a nice restaurant in the south of town in the expensive price range
 5 italian food	api_call italian R_location expensive
 6 clowns_cafe R_post_code clowns_cafe_post_code
 7 clowns_cafe R_cuisine italian
@@ -25795,8 +25795,8 @@
 5 <SILENCE>	midsummer_house_restaurant serves british food .
 6 hungarian	midsummer_house_restaurant is a nice place in the centre of town
 7 south town	midsummer_house_restaurant is a great restaurant
-8 south	the good luck chinese food takeaway is a nice restaurant in the south of town serving chinese food
-9 hungarian food	the good luck chinese food takeaway is a nice place in the south of town
+8 south	the_good_luck_chinese_food_takeaway is a nice restaurant in the south of town serving chinese food
+9 hungarian food	the_good_luck_chinese_food_takeaway is a nice place in the south of town
 10 modern_european	api_call R_cuisine south R_price
 11 frankie_and_bennys R_post_code frankie_and_bennys_post_code
 12 frankie_and_bennys R_cuisine italian
@@ -26814,15 +26814,15 @@
 7 how about a gastropub	api_call gastropub R_location moderate
 8 api_call no result
 9 <SILENCE>	saint_johns_chop_house is a nice restaurant in the west of town serving british food
-10 what about gastropub	the cow pizza kitchen and bar is a nice restaurant in the centre of town serving gastropub food
-11 what is the address	Sure , the cow pizza kitchen and bar is on the_cow_pizza_kitchen_and_bar_address
-12 what is the phone number	The phone number of the cow pizza kitchen and bar is the_cow_pizza_kitchen_and_bar_phone
-13 what is the area	the cow pizza kitchen and bar is a nice place in the centre of town
+10 what about gastropub	the_cow_pizza_kitchen_and_bar is a nice restaurant in the centre of town serving gastropub food
+11 what is the address	Sure , the_cow_pizza_kitchen_and_bar is on the_cow_pizza_kitchen_and_bar_address
+12 what is the phone number	The phone number of the_cow_pizza_kitchen_and_bar is the_cow_pizza_kitchen_and_bar_phone
+13 what is the area	the_cow_pizza_kitchen_and_bar is a nice place in the centre of town
 14 thank you good bye	 you are welcome
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?
 2 i want to find an expensive restaurant in the south part of town	What kind of food would you like?
-3 i dont care	the good luck chinese food takeaway is a nice restaurant in the south of town serving chinese food
+3 i dont care	the_good_luck_chinese_food_takeaway is a nice restaurant in the south of town serving chinese food
 4 is there anything else	api_call R_cuisine south expensive
 5 frankie_and_bennys R_post_code frankie_and_bennys_post_code
 6 frankie_and_bennys R_cuisine italian
