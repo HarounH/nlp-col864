@@ -236,7 +236,7 @@ class MemN2N(object):
             cost += np.sum(loss)
 
         if self.show: bar.finish()
-        pdb.set_trace()
+        # pdb.set_trace()
         return cost/(N*self.batch_size)
 
     def test(self, data, label='Test'):

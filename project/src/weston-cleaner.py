@@ -5,7 +5,8 @@ import pdb;
 
 ontology_file  ='ontology_dstc2.json'
 candidates_file='weston_baseline/data/dialog-bAbI-tasks/dialog-babi-task6-dstc2-candidates.txt'
-templates_file='./dialog-babi-task6-dstc2-templatised-candidates.txt'
+templates_file ='./dialog-babi-task6-dstc2-templatised-candidates.txt'
+vals2slots_file='vals2slots.json'
 
 # read ontology
 req_key = 'requestable'
@@ -16,9 +17,11 @@ fake_fields = ['addr', 'postcode', 'phone']
 
 
 val2slot = {}
+slots2vals = {}
+
 
 def txtfield2tmpfield(field):
-	return '{ ' + field + ' }'
+	return '{-' + field + '-}'
 
 def isTemplateField(s):
 	
@@ -31,16 +34,30 @@ with open(ontology_file, 'r') as f:
 		for item in items:
 			item = item.replace(' ','_')
 			val2slot[item]=txtfield2tmpfield(field)
+			if txtfield2tmpfield(field) not in slots2vals:
+				slots2vals[txtfield2tmpfield(field)] = []
+			slots2vals[txtfield2tmpfield(field)].append(item)
 
+	slots2vals[txtfield2tmpfield('addr')] = []
+	slots2vals[txtfield2tmpfield('postcode')] = []
+	slots2vals[txtfield2tmpfield('phone')] = []
 
 	for name in raw_ontology_data[inf_key]['name']:
 		val2slot[name.replace(' ','_') + ('_address')] = txtfield2tmpfield('addr')
+		slots2vals[txtfield2tmpfield('addr')].append(name.replace(' ','_') + ('_address'))
+			
 		val2slot[name.replace(' ','_') + ('_post_code')] = txtfield2tmpfield('postcode')
+		slots2vals[txtfield2tmpfield('postcode')].append(name.replace(' ','_') + ('_post_code'))
+
 		val2slot[name.replace(' ','_') + ('_phone')] = txtfield2tmpfield('phone')
+		slots2vals[txtfield2tmpfield('phone')].append(name.replace(' ','_') + ('_phone'))
 
 val2slot['R_location'] = txtfield2tmpfield('area')
 val2slot['R_price'] = txtfield2tmpfield('pricerange')
 val2slot['R_cuisine'] = txtfield2tmpfield('food')
+slots2vals[txtfield2tmpfield('area')].append('R_location')
+slots2vals[txtfield2tmpfield('pricerange')].append('R_price')
+slots2vals[txtfield2tmpfield('food')].append('R_cuisine')
 
 # pdb.set_trace()
 # string -> field.
@@ -71,7 +88,7 @@ def addTemplate(templates, new_template):
 				oldFields = set(old[i].split(' ')[1:-1])
 				newFields = set(new[i].split(' ')[1:-1])
 				allFields = oldFields.union(newFields)
-				unification.append(txtfield2tmpfield(' '.join(list(allFields))))
+				unification.append(txtfield2tmpfield('-'.join(list(allFields))))
 			else:
 				return False, None
 		return True,unification
@@ -103,3 +120,7 @@ with open(candidates_file, 'r') as f:
 with open(templates_file, 'w') as g:
 	for idx in range(0, len(templates)):
 		g.write(' '.join(templates[idx]) + '\n')
+
+with open(vals2slots_file,'w') as g:
+	json.dump(val2slot, g, indent=4)
+
