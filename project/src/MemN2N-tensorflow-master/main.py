@@ -12,11 +12,11 @@ pp = pprint.PrettyPrinter()
 
 flags = tf.app.flags
 
-flags.DEFINE_integer("edim", 150, "internal state dimension [150]")
+flags.DEFINE_integer("edim", 128, "internal state dimension [128]")
 flags.DEFINE_integer("lindim", 75, "linear part of the state [75]")
-flags.DEFINE_integer("nhop", 6, "number of hops [6]")
+flags.DEFINE_integer("nhop", 4, "number of hops [4]")
 flags.DEFINE_integer("mem_size", 100, "memory size [100]")
-flags.DEFINE_integer("batch_size", 17, "batch size to use during training [128]")
+flags.DEFINE_integer("batch_size", 20, "batch size to use during training [128]")
 flags.DEFINE_integer("nepoch", 100, "number of epoch to use during training [100]")
 flags.DEFINE_float("init_lr", 0.0001, "initial learning rate [0.01]")
 flags.DEFINE_float("init_hid", 0.1, "initial internal state value [0.1]")
@@ -25,8 +25,8 @@ flags.DEFINE_float("max_grad_norm", 50, "clip gradients to this norm [50]")
 flags.DEFINE_string("data_dir", "../weston_baseline/data/dialog-bAbI-tasks", "data directory [data]")
 flags.DEFINE_string("checkpoint_dir", "checkpoints", "checkpoint directory [checkpoints]")
 # flags.DEFINE_string("data_name", "ptb", "data set name [ptb]")
-# flags.DEFINE_string("data_name", "dialog-babi-task6-dstc2", "data set name [dialog-babi-task6-dstc2]")
-flags.DEFINE_string("data_name", "small", "data set name [dialog-babi-task6-dstc2]")
+flags.DEFINE_string("data_name", "dialog-babi-task6-dstc2", "data set name [dialog-babi-task6-dstc2]")
+# flags.DEFINE_string("data_name", "small", "data set name [dialog-babi-task6-dstc2]")
 flags.DEFINE_boolean("is_test", False, "True for testing, False for Training [False]")
 flags.DEFINE_boolean("show", False, "print progress [False]")
 flags.DEFINE_string("candidate_filename","dialog-babi-task6-dstc2-candidates.txt","file containing valid candidates")
@@ -77,6 +77,8 @@ def main(_):
 
 	max_story_size = max(map(len, (s for s, _, _ in raw_data)))
 	mean_story_size = int(np.mean([ len(s) for s, _, _ in raw_data ]))
+
+	FLAGS.mem_size = max(FLAGS.mem_size, max_story_size)
 	
 	sentence_size = max(map(len, chain.from_iterable(s for s, _, _ in raw_data)))
 	query_size = max(map(len, (q for _, q, _ in raw_data)))
@@ -111,7 +113,7 @@ def main(_):
 		model.build_model()
 
 		if FLAGS.is_test:
-			model.run(valid_data, test_data)
+			model.run(val_data, test_data)
 		else:
 			model.run(train_data, val_data)
 

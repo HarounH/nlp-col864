@@ -314,7 +314,10 @@ class MemN2N(object):
                 if idx % 10 == 0:
                     self.saver.save(self.sess,
                                     os.path.join(self.checkpoint_dir, "MemN2N.model"),
-                                    global_step = self.step.astype(int))
+                                    global_step = idx)
+            self.saver.save(self.sess,
+                            os.path.join(self.checkpoint_dir, "MemN2N.model"),
+                            global_step = (self.nepoch-1))
         else:
             self.load()
 
@@ -322,8 +325,8 @@ class MemN2N(object):
             test_loss = np.sum(self.test(test_data, label='Test'))
 
             state = {
-                'valid_perplexity': math.exp(valid_loss),
-                'test_perplexity': math.exp(test_loss)
+                'valid_loss': valid_loss,
+                'test_loss': test_loss
             }
             print(state)
 
