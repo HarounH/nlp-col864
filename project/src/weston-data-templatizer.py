@@ -13,8 +13,7 @@ val2slot = {}
 templates = {}
 n=0
 
-def isTemplateField(s):
-	return len(s)>0 and s[0]=='{' and s[-1]=='}'
+from template_utils import *
 
 for i in range(0, len(infiles)):
 	infiles[i] = directory + '/' + infiles[i]
@@ -34,49 +33,6 @@ with open(templates_file,'r') as f:
 with open(vals2slots_file) as f:
 	val2slot = json.load(f)
 
-'''
-	MORE CODE!
-	The part following this uses the templates that we found to modify datafiles.
-'''
-def get_template_id(templates, val2slot, answer):
-	# pdb.set_trace()
-	for idx in range(0, len(templates)):
-		correct=True
-		
-		t = templates[idx][0:]
-		# Try to merge templates[i]
-		
-		if len(t)==len(answer):
-			# pdb.set_trace()
-			
-			for lidx in range(0, len(answer)):
-				# pdb.set_trace()
-				if answer[lidx]==t[lidx]:
-					pass
-				elif isTemplateField(t[lidx]):
-					# do things
-					if answer[lidx] in val2slot:
-						slot = val2slot[answer[lidx]]
-
-						if slot.split('-')[1] in t[lidx].split('-'):
-							pass
-						else:
-							correct=False
-							break
-					else:
-						correct = False
-						break
-				else:
-					correct=False
-					break
-			if correct:
-				# print('Success!')
-				return idx
-		else:
-			continue
-		
-	return -1
-
 def handle_file(infile, outfile):
 	with open(infile, 'r') as f:
 		with open(outfile, 'w') as g:
@@ -94,7 +50,7 @@ def handle_file(infile, outfile):
 					a = a.rstrip('\r\n')
 
 					# merge a with template	
-					aidx = get_template_id(templates, val2slot, a.split(' '))
+					aidx = getTemplateID(templates, val2slot, a.split(' '))
 					if (aidx == -1):
 						print('Could not templatise this response: \n\t' + a)
 						print('While handling ' + infile)
@@ -103,7 +59,7 @@ def handle_file(infile, outfile):
 				else:
 					# These are system responses to you.
 					a = line.rstrip('\r\n')
-					# aidx = get_template_id(templates, val2slot, a.split(' '))
+					# aidx = getTemplateID(templates, val2slot, a.split(' '))
 					# if (aidx == -1):
 					# 	print('Could not templatise this response: \n\t' + a)
 					# 	exit()
