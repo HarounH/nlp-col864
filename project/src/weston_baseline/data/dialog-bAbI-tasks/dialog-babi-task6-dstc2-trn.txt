@@ -26756,7 +26756,7 @@
 35 laughing	restaurant_one_seven is a great restaurant
 36 is there anything else	la_tasca is in the moderate price range
 37 and where is that located	la_tasca is a great restaurant
-38 what part of town	la_tasca is in the centre , at C.B 2, 1 U.F
+38 what part of town	la_tasca is in the centre , at la_tasca_post_code
 39 find something in the north part	You are looking for a the_americas restaurant right?
 40 laughing	I'm sorry but there is no restaurant serving the_americas food
 41 thank you goodbye	 you are welcome
@@ -27568,7 +27568,7 @@
 14 could i have the address	Sure , little_seoul is on little_seoul_address
 15 phone number	The phone number of little_seoul is little_seoul_phone
 16 could i have the address	Sure , little_seoul is on little_seoul_address
-17 and price range	little_seoul is in the expensive price range , and their post code is C.B 2, 1 D.P
+17 and price range	little_seoul is in the expensive price range , and their post code is little_seoul_post_code
 18 could i have the address please	Sure , little_seoul is on little_seoul_address
 19 thank you good bye	 you are welcome
 
@@ -28707,7 +28707,7 @@
 31 tandoori_palace R_rating 9
 32 <SILENCE>	tandoori_palace is a nice place in the north of town serving tasty indian food
 33 may i have the address phone number and price range	The phone number of tandoori_palace is tandoori_palace_phone
-34 and what is the price range	tandoori_palace is in the expensive price range , and their post code is C.B 4, 3 L.E
+34 and what is the price range	tandoori_palace is in the expensive price range , and their post code is tandoori_palace_post_code
 35 thank you good bye	 you are welcome
 
 1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?

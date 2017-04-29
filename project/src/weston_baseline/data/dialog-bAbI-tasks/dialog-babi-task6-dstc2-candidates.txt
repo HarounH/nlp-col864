@@ -175,7 +175,7 @@
 1 The phone number of darrys_cookhouse_and_wine_shop is darrys_cookhouse_and_wine_shop_phone
 1 There are restaurants serving mediterranean food in any part of town . What price range would you like?
 1 cocum serves indian food
-1 little_seoul is a good restaurant on 108 Regent Street City Centre and it is in the expensive price range
+1 little_seoul is a good restaurant on little_seoul_address and it is in the expensive price range
 1 The post code of maharajah_tandoori_restaurant is maharajah_tandoori_restaurant_post_code
 1 There are restaurants serving modern_european food in any part of town . What price range would you like?
 1 backstreet_bistro is on backstreet_bistro_address
@@ -261,7 +261,7 @@
 1 Sorry there is no cheap restaurant in the north of town serving asian_oriental food
 1 api_call italian south expensive
 1 Sorry would you like turkish or vegetarian food?
-1 The address of the_nirala is 7 Milton Road Chesterton .
+1 The address of the_nirala is the_nirala_address .
 1 michaelhouse_cafe is in the expensive price range
 1 Sorry there is no belgian restaurant in the centre of town
 1 the_missing_sock is a nice place in the east of town serving tasty international food
@@ -306,7 +306,7 @@
 1 api_call vegetarian R_location expensive
 1 I'm sorry but there is no japanese restaurant in the west of town
 1 api_call portuguese R_location R_price
-1 The address of thanh_binh is 17 Magdalene Street City Centre .
+1 The address of thanh_binh is thanh_binh_address .
 1 midsummer_house_restaurant is a nice restaurant in the centre of town serving british food
 1 I'm sorry but there is no turkish restaurant in the east of town
 1 There are restaurants serving thai food . What price range do you want?
@@ -471,7 +471,7 @@
 1 The price range at stazione_restaurant_and_coffee_bar is expensive .
 1 fitzbillies_restaurant serves british food in the expensive price range
 1 The phone number of efes_restaurant is efes_restaurant_phone
-1 little_seoul is in the expensive price range , and their post code is C.B 2, 1 D.P
+1 little_seoul is in the expensive price range , and their post code is little_seoul_post_code
 1 the_cow_pizza_kitchen_and_bar serves gastropub food in the moderate price range
 1 anatolia is a great restaurant serving turkish food and it is in the moderate price range
 1 nandos_city_centre serves portuguese food in the cheap price range
@@ -1089,7 +1089,7 @@
 1 I'm sorry but there is no gastropub restaurant in the west of town
 1 api_call R_cuisine R_location R_price
 1 The phone number of yippee_noodle_bar is yippee_noodle_bar_phone
-1 tandoori_palace is in the expensive price range , and their post code is C.B 4, 3 L.E
+1 tandoori_palace is in the expensive price range , and their post code is tandoori_palace_post_code
 1 api_call turkish east R_price
 1 Sorry there is no australian restaurant in the east of town
 1 yippee_noodle_bar is in the moderate price range
@@ -1809,7 +1809,7 @@
 1 grafton_hotel_restaurant is a nice restaurant in the east of town in the expensive price range
 1 galleria is a great restaurant serving european food and it is in the moderate price range
 1 Sorry would you like asian_oriental or christmas food?
-1 la_tasca is in the centre , at C.B 2, 1 U.F
+1 la_tasca is in the centre , at la_tasca_post_code
 1 the_missing_sock serves international food in the cheap price range
 1 There are restaurants serving indian in the west of town . What price range would you like?
 1 Sorry there is no belgian restaurant in the south of town
@@ -1849,7 +1849,7 @@
 1 api_call kosher north R_price
 1 The post code of efes_restaurant is efes_restaurant_post_code
 1 the_good_luck_chinese_food_takeaway is a great restaurant
-1 pizza_hut_cherry_hinton is a great restaurant serving italian food . Their phone number is 01223 323737 .
+1 pizza_hut_cherry_hinton is a great restaurant serving italian food . Their phone number is pizza_hut_cherry_hinton_phone .
 1 api_call chinese east cheap
 1 golden_wok serves chinese food
 1 Sorry there is no swiss restaurant in the east of town
@@ -2008,7 +2008,7 @@
 1 api_call indian west expensive
 1 grafton_hotel_restaurant serves british food in the expensive price range
 1 rajmahal is a great restaurant serving indian food and it is in the moderate price range
-1 The address of yu_garden is 529 Newmarket Road_fen_ditton .
+1 The address of yu_garden is yu_garden_address .
 1 zizzi_cambridge serves italian food .
 1 kymmoy is a great restaurant
 1 zizzi_cambridge serves italian food
@@ -2324,7 +2324,7 @@
 1 sesame_restaurant_and_bar serves chinese food
 1 Sorry would you like something in the east or in the south
 1 grafton_hotel_restaurant is a nice place in the east of town serving tasty british food
-1 meze_bar_restaurant is in the expensive price range , and their post code is C.B 1, 3 N.F
+1 meze_bar_restaurant is in the expensive price range , and their post code is meze_bar_restaurant_post_code
 1 Sorry there is no polish restaurant in the west of town
 1 api_call spanish R_location cheap
 1 There are restaurants serving tuscan in the expensive price range . What area would you like?
