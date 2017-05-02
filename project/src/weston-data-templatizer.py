@@ -13,8 +13,10 @@ val2slot = {}
 templates = {}
 n=0
 
-def isTemplateField(s):
-	return len(s)>0 and s[0]=='{' and s[-1]=='}'
+from template_utils import *
+
+anonymise_slots = ['name', 'phone', 'addr', 'postcode']
+anonymise_slots = [kbField2templateField(x) for x in anonymise_slots]
 
 for i in range(0, len(infiles)):
 	infiles[i] = directory + '/' + infiles[i]
@@ -34,56 +36,44 @@ with open(templates_file,'r') as f:
 with open(vals2slots_file) as f:
 	val2slot = json.load(f)
 
-'''
-	MORE CODE!
-	The part following this uses the templates that we found to modify datafiles.
-'''
-def get_template_id(templates, val2slot, answer):
-	# pdb.set_trace()
-	for idx in range(0, len(templates)):
-		correct=True
-		
-		t = templates[idx][0:]
-		# Try to merge templates[i]
-		
-		if len(t)==len(answer):
-			# pdb.set_trace()
-			
-			for lidx in range(0, len(answer)):
-				# pdb.set_trace()
-				if answer[lidx]==t[lidx]:
-					pass
-				elif isTemplateField(t[lidx]):
-					# do things
-					if answer[lidx] in val2slot:
-						slot = val2slot[answer[lidx]]
-
-						if slot.split('-')[1] in t[lidx].split('-'):
-							pass
-						else:
-							correct=False
-							break
-					else:
-						correct = False
-						break
-				else:
-					correct=False
-					break
-			if correct:
-				# print('Success!')
-				return idx
+def anonymise_string(s, tok2anon_tok):
+	global anonymise_slots, val2slot
+	'''
+		@in s a non-anonymised list of words
+		@in tok2anon_tok a dictionary that contains mappings from anonymised things to (type, anonname) pairs
+		@return anon_s anonymised version of s, list of words
+	'''
+	anon_s = []
+	for tok in s:
+		# if tok is already in tok2anon_tok
+		if tok in tok2anon_tok:
+			anon_s.append(tok2anon_tok[tok][1])
 		else:
-			continue
-		
-	return -1
+			if tok=='ask' and 'Cambridge' in s and 'system' in s:
+				anon_s.append('ask')
+				continue
+			if tok in val2slot:
+				slot = val2slot[tok]
+				idx = 1
+				for (k,v) in tok2anon_tok.items():
+					if v[0] == slot:
+						idx += 1
 
-def handle_file(infile, outfile):
+				anon_name = templateField2kbFields(slot)[0] + '_' + str(idx) # [0] works because theres only one, really
+				tok2anon_tok[tok] = (slot, anon_name)
+				anon_s.append(anon_name)
+			else:
+				anon_s.append(tok)
+	return anon_s
+
+def handle_file(infile, outfile, anonymise=False):
 	with open(infile, 'r') as f:
 		with open(outfile, 'w') as g:
+			anonymisation_dict = {}
 			for line in f:
-				# print(line)
 				# if new line, then ignore
 				if line == '\n':
+					anonymisation_dict = {}
 					g.write('\n')
 					continue
 				# Split the line
@@ -94,7 +84,9 @@ def handle_file(infile, outfile):
 					a = a.rstrip('\r\n')
 
 					# merge a with template	
-					aidx = get_template_id(templates, val2slot, a.split(' '))
+					aidx = getTemplateID(templates, val2slot, a.split(' '))
+					q = ' '.join(anonymise_string(q.split(' '), anonymisation_dict))
+					a = ' '.join(anonymise_string(a.split(' '), anonymisation_dict))
 					if (aidx == -1):
 						print('Could not templatise this response: \n\t' + a)
 						print('While handling ' + infile)
@@ -103,12 +95,12 @@ def handle_file(infile, outfile):
 				else:
 					# These are system responses to you.
 					a = line.rstrip('\r\n')
-					# aidx = get_template_id(templates, val2slot, a.split(' '))
+					# aidx = getTemplateID(templates, val2slot, a.split(' '))
 					# if (aidx == -1):
 					# 	print('Could not templatise this response: \n\t' + a)
 					# 	exit()
+					a = ' '.join(anonymise_string(a.split(' '), anonymisation_dict))
 					g.write(str(nid) + ' ' + a + '\n')
-
 
 for i in range(0, len(infiles)):
 	handle_file(infiles[i], outfiles[i])

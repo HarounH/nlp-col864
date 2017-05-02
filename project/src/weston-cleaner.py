@@ -19,13 +19,7 @@ fake_fields = ['addr', 'postcode', 'phone']
 val2slot = {}
 slots2vals = {}
 
-
-def txtfield2tmpfield(field):
-	return '{-' + field + '-}'
-
-def isTemplateField(s):
-	
-	return len(s)>0 and s[0]=='{' and s[-1]=='}'
+from template_utils import *
 
 with open(ontology_file, 'r') as f:
 	raw_ontology_data = json.load(f)
@@ -33,31 +27,31 @@ with open(ontology_file, 'r') as f:
 		items = raw_ontology_data[inf_key][field] #  a list
 		for item in items:
 			item = item.replace(' ','_')
-			val2slot[item]=txtfield2tmpfield(field)
-			if txtfield2tmpfield(field) not in slots2vals:
-				slots2vals[txtfield2tmpfield(field)] = []
-			slots2vals[txtfield2tmpfield(field)].append(item)
+			val2slot[item]=kbField2templateField(field)
+			if kbField2templateField(field) not in slots2vals:
+				slots2vals[kbField2templateField(field)] = []
+			slots2vals[kbField2templateField(field)].append(item)
 
-	slots2vals[txtfield2tmpfield('addr')] = []
-	slots2vals[txtfield2tmpfield('postcode')] = []
-	slots2vals[txtfield2tmpfield('phone')] = []
+	slots2vals[kbField2templateField('addr')] = []
+	slots2vals[kbField2templateField('postcode')] = []
+	slots2vals[kbField2templateField('phone')] = []
 
 	for name in raw_ontology_data[inf_key]['name']:
-		val2slot[name.replace(' ','_') + ('_address')] = txtfield2tmpfield('addr')
-		slots2vals[txtfield2tmpfield('addr')].append(name.replace(' ','_') + ('_address'))
+		val2slot[name.replace(' ','_') + ('_address')] = kbField2templateField('addr')
+		slots2vals[kbField2templateField('addr')].append(name.replace(' ','_') + ('_address'))
 			
-		val2slot[name.replace(' ','_') + ('_post_code')] = txtfield2tmpfield('postcode')
-		slots2vals[txtfield2tmpfield('postcode')].append(name.replace(' ','_') + ('_post_code'))
+		val2slot[name.replace(' ','_') + ('_post_code')] = kbField2templateField('postcode')
+		slots2vals[kbField2templateField('postcode')].append(name.replace(' ','_') + ('_post_code'))
 
-		val2slot[name.replace(' ','_') + ('_phone')] = txtfield2tmpfield('phone')
-		slots2vals[txtfield2tmpfield('phone')].append(name.replace(' ','_') + ('_phone'))
+		val2slot[name.replace(' ','_') + ('_phone')] = kbField2templateField('phone')
+		slots2vals[kbField2templateField('phone')].append(name.replace(' ','_') + ('_phone'))
 
-val2slot['R_location'] = txtfield2tmpfield('area')
-val2slot['R_price'] = txtfield2tmpfield('pricerange')
-val2slot['R_cuisine'] = txtfield2tmpfield('food')
-slots2vals[txtfield2tmpfield('area')].append('R_location')
-slots2vals[txtfield2tmpfield('pricerange')].append('R_price')
-slots2vals[txtfield2tmpfield('food')].append('R_cuisine')
+val2slot['R_location'] = kbField2templateField('area')
+val2slot['R_price'] = kbField2templateField('pricerange')
+val2slot['R_cuisine'] = kbField2templateField('food')
+slots2vals[kbField2templateField('area')].append('R_location')
+slots2vals[kbField2templateField('pricerange')].append('R_price')
+slots2vals[kbField2templateField('food')].append('R_cuisine')
 
 # pdb.set_trace()
 # string -> field.
@@ -88,7 +82,7 @@ def addTemplate(templates, new_template):
 				oldFields = set(old[i].split(' ')[1:-1])
 				newFields = set(new[i].split(' ')[1:-1])
 				allFields = oldFields.union(newFields)
-				unification.append(txtfield2tmpfield('-'.join(list(allFields))))
+				unification.append(kbField2templateField('-'.join(list(allFields))))
 			else:
 				return False, None
 		return True,unification
