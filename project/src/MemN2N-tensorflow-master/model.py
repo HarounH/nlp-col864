@@ -49,9 +49,13 @@ class MemN2N(object):
         self.step = None
         self.optim = None
 
+
         self.sess = sess
         self.log_loss = []
         #self.log_perp = []
+
+        self.test_output_file = config.test_output_file
+
 
     def build_memory(self):
         self.global_step = tf.Variable(0, name="global_step")
@@ -284,13 +288,27 @@ class MemN2N(object):
                                                          # self.time: time,
                                                          self.target: target,
                                                          self.context: context})
-            y = np.matmul(hid, W)
-            for i in range(target.shape[0]):
-                y_max = np.argmax(y[i])
-                target_max = np.argmax(target[i])
-                if y_max == target_max:
-                    match=match+1
-                total=total+1
+            
+            if self.test_output_file!='':
+                with open(self.test_output_file,'w') as f:
+                    y = np.matmul(hid, W)
+                    for i in range(target.shape[0]):
+                        y_max = np.argmax(y[i])
+                        target_max = np.argmax(target[i])
+                        f.write(str(y_max) + ',' + str(target_max) + '\n')
+                        if y_max == target_max:
+                            match=match+1
+                        total=total+1
+            else:
+                y = np.matmul(hid, W)
+                for i in range(target.shape[0]):
+                    y_max = np.argmax(y[i])
+                    target_max = np.argmax(target[i])
+            
+                    if y_max == target_max:
+                        match=match+1
+                    total=total+1
+
                 
             cost += np.sum(loss)
 
