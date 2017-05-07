@@ -216,19 +216,21 @@ def prepare_seq_2_seq_data(data_dir, en_vocabulary_size, fr_vocabulary_size, tok
           en_vocab_path, fr_vocab_path)
 
 def create_dialog_data(data_file, encoder_file, decoder_file, only_supporting=False):
-  data=[]
   
   outContext = open(encoder_file, "wb")
   outResponse = open(decoder_file, "wb")
-  outcount = open('count.tsv', "wb")
-  outcount.close()
   outContext.close()
   outResponse.close()
   outContext = open(encoder_file, "ab")
   outResponse = open(decoder_file, "ab")
+  
+  #to print statistics
+  outcount = open('count.tsv', "wb")
+  outcount.close()
   outcount = open('count.tsv', "ab")
   linedict={}
   respdict={}
+
   with open(data_file) as f:
       mem = []
       dbquery = []
@@ -259,20 +261,21 @@ def create_dialog_data(data_file, encoder_file, decoder_file, only_supporting=Fa
                   else :
                      outContext.write(" ".join(str(x) for x in input_utterance))
                   outContext.write("\n")
-                  outResponse.write(a + "\n")
+                  cleaned_a = ' '.join(a.split()[:-1])
+                  outResponse.write(cleaned_a + "\n")
                   
+                  # to print statisctics
                   linecount = linecount+len(q)
                   if linecount in linedict:
                     linedict[linecount] = linedict[linecount]+1
-                    respdict[linecount].append(len(a.split(' ')))
+                    respdict[linecount].append(len(cleaned_a.split(' ')))
                   else:
                     linedict[linecount] = 1
                     respdict[linecount] = []
-                    respdict[linecount].append(len(a.split(' ')))
+                    respdict[linecount].append(len(cleaned_a.split(' ')))
 
-                  data.append((mem[:], q, a))
                   mem.append(q)
-                  mem.append(a.split(' '))
+                  mem.append(cleaned_a.split(' '))
               else:
                   lsplit = line.split(' ')
                   if restaurant != lsplit[0]:

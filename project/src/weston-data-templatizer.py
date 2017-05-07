@@ -54,17 +54,17 @@ def anonymise_string(s, tok2anon_tok):
 				continue
 			if tok in val2slot:
 				slot = val2slot[tok]
-				#if slot == '{-food-}' or slot == '{-area-}' or slot == '{-pricerange-}':
-				#	anon_s.append(tok)
-				#else:
-				idx = 1
-				for (k,v) in tok2anon_tok.items():
-					if v[0] == slot:
-						idx += 1
+				if tok == 'R_price' or tok == 'R_location' or tok == 'R_cuisine':
+					anon_s.append(tok)
+				else:
+					idx = 1
+					for (k,v) in tok2anon_tok.items():
+						if v[0] == slot:
+							idx += 1
 
-				anon_name = templateField2kbFields(slot)[0] + '_' + str(idx) # [0] works because theres only one, really
-				tok2anon_tok[tok] = (slot, anon_name)
-				anon_s.append(anon_name)
+					anon_name = templateField2kbFields(slot)[0] + '_' + str(idx) # [0] works because theres only one, really
+					tok2anon_tok[tok] = (slot, anon_name)
+					anon_s.append(anon_name)
 			else:
 				anon_s.append(tok)
 	return anon_s
