@@ -11,28 +11,51 @@ def read_dstc2_data_template(fname):
 	data=[]
 	with open(fname) as f:
 		mem = []
+		query_results = {} # resto_name -> list of words(str)
 		for line in f.readlines():
 			if line.strip():
 				nid, line = line.split(' ', 1)
 				nid = int(nid)
 				line = line.rstrip()
 				if '\t' in line:
+					# Handle query_results
+					if len(query_results)>0:
+						# Append them to memory
+						for key in query_results:
+							mem.append(query_results[key])
+						query_results = {}
+
 					q,a,aidx = line.split('\t')
 					q = q.split(' ')
 					aidx = int(aidx)
 					data.append((mem[:], q, a, aidx))
 					mem.append(q)
 					mem.append(a.split(' '))
+
 				else:
-					mem.append(line.split(' '))
+					toks = (line.split(' '))
+					resto_name = toks[0]
+					if not(resto_name in query_results):
+						query_results[resto_name] = [resto_name]
+					query_results[resto_name].append(toks[2].rstrip('\r\n '))
+
 			else:
+				if len(query_results)>0:
+					# Append them to memory
+					for key in query_results:
+						mem.append(query_results[key])
+						query_results = {}
 				mem = []
+		if len(query_results)>0:
+			# Append them to memory
+			for key in query_results:
+				mem.append(query_results[key])
+				query_results = {}
 	return data
 
 def vectorize_data_template(raw_data, max_sentence_length, n_memory_cells, word2idx, template2idx):
 	'''
 		Takes in raw_data and converts it into vectorised form depending on word2idx, template2idx
-
 		max_sentence_length also accomodates for time and utterer .
 	'''
 	contexts = []
