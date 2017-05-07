@@ -49,12 +49,12 @@ def anonymise_string(s, tok2anon_tok):
 		if tok in tok2anon_tok:
 			anon_s.append(tok2anon_tok[tok][1])
 		else:
-			if tok=='ask' and 'Cambridge' in s and 'system' in s:
+			if tok=='ask' and 'cambridge' in s and 'system' in s:
 				anon_s.append('ask')
 				continue
 			if tok in val2slot:
 				slot = val2slot[tok]
-				if tok == 'R_price' or tok == 'R_location' or tok == 'R_cuisine':
+				if tok == 'r_price' or tok == 'r_location' or tok == 'r_cuisine':
 					anon_s.append(tok)
 				else:
 					idx = 1
@@ -67,10 +67,9 @@ def anonymise_string(s, tok2anon_tok):
 					anon_s.append(anon_name)
 			else:
 				anon_s.append(tok)
-	if anon_s[-1]=='?':
-		anon_s = anon_s[:-1]
+	
 	for i in range(0, len(anon_s)):
-		anon_s[i] = anon_s[i].lower()
+		anon_s[i] = anon_s[i].replace('?','').lower()
 	return anon_s
 
 def handle_file(infile, outfile, anonymise=False):
@@ -98,7 +97,7 @@ def handle_file(infile, outfile, anonymise=False):
 						print('Could not templatise this response: \n\t' + a)
 						print('While handling ' + infile)
 						exit()
-					if not (q == '<SILENCE>' and 'Cambridge restaurant system' in a):
+					if not (q == '<silence>' and 'cambridge restaurant system' in a):
 						g.write(str(nid) + ' ' + q + '\t' + a + '\t' + str(aidx) + '\n')
 				else:
 					# These are system responses to you.

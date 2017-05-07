@@ -277,16 +277,19 @@ def create_dialog_data(data_file, encoder_file, decoder_file, only_supporting=Fa
                   mem.append(q)
                   mem.append(cleaned_a.split(' '))
               else:
-                  lsplit = line.split(' ')
-                  if restaurant != lsplit[0]:
-                    if len(dbquery) > 0:
-                      mem.append(dbquery)
-                      dbquery = []
-                    restaurant = lsplit[0]
-                    dbquery.append(restaurant)
-                    dbquery.append(lsplit[2])
+                  if line == 'api_call no result':
+                    dbquery.append('api_call_no_result')
                   else:
-                    dbquery.append(lsplit[2])
+                    lsplit = line.split(' ')
+                    if restaurant != lsplit[0]:
+                      if len(dbquery) > 0:
+                        mem.append(dbquery)
+                        dbquery = []
+                      restaurant = lsplit[0]
+                      dbquery.append(restaurant)
+                      dbquery.append(lsplit[2])
+                    else:
+                      dbquery.append(lsplit[2])
           else:
               mem = []
               dbquery = []
