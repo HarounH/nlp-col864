@@ -242,6 +242,8 @@ class MemN2N(object):
     def test(self, data, label='Test'):
         N = int(math.ceil(float(len(data[0])) / self.batch_size))
         cost = 0
+        match = 0
+        total = 0
 
         x = np.ndarray([self.batch_size, self.max_sentence_length], dtype=np.float32)
         # time = np.ndarray([self.batch_size, self.mem_size], dtype=np.int32)
@@ -278,14 +280,22 @@ class MemN2N(object):
                 # pdb.set_trace()
                 context[b] = data[0][indexIntoData]
                 
-            loss = self.sess.run([self.loss], feed_dict={self.input: x,
+            loss,hid,W = self.sess.run([self.loss,self.hid[-1],self.W], feed_dict={self.input: x,
                                                          # self.time: time,
                                                          self.target: target,
                                                          self.context: context})
+            y = np.matmul(hid, W)
+            for i in range(target.shape[0]):
+                y_max = np.argmax(y[i])
+                target_max = np.argmax(target[i])
+                if y_max == target_max:
+                    match=match+1
+                total=total+1
+                
             cost += np.sum(loss)
 
         if self.show: bar.finish()
-        return cost/(N*self.batch_size)
+        return cost/(N*self.batch_size),match, total
 
     def run(self, train_data, test_data):
         if not self.is_test:
@@ -321,12 +331,15 @@ class MemN2N(object):
         else:
             self.load()
 
-            valid_loss = np.sum(self.test(train_data, label='Validation'))
-            test_loss = np.sum(self.test(test_data, label='Test'))
+            #valid_loss = np.sum(self.test(train_data, label='Validation'))
+            loss,match,total = self.test(test_data, label='Test')
 
+            # there are a total of 1117 conversations in the test set
+            # since we ignored the initial ask turn, adding 1117
             state = {
-                'valid_loss': valid_loss,
-                'test_loss': test_loss
+                'match': match,
+                'total': total+1117,
+                'loss': loss+1117
             }
             print(state)
 

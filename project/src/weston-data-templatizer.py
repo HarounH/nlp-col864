@@ -54,6 +54,9 @@ def anonymise_string(s, tok2anon_tok):
 				continue
 			if tok in val2slot:
 				slot = val2slot[tok]
+				#if slot == '{-food-}' or slot == '{-area-}' or slot == '{-pricerange-}':
+				#	anon_s.append(tok)
+				#else:
 				idx = 1
 				for (k,v) in tok2anon_tok.items():
 					if v[0] == slot:
@@ -91,7 +94,8 @@ def handle_file(infile, outfile, anonymise=False):
 						print('Could not templatise this response: \n\t' + a)
 						print('While handling ' + infile)
 						exit()
-					g.write(str(nid) + ' ' + q + '\t' + a + '\t' + str(aidx) + '\n')
+					if not (q == '<SILENCE>' and 'Cambridge restaurant system' in a):
+						g.write(str(nid) + ' ' + q + '\t' + a + '\t' + str(aidx) + '\n')
 				else:
 					# These are system responses to you.
 					a = line.rstrip('\r\n')
