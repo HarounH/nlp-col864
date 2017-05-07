@@ -69,6 +69,8 @@ def anonymise_string(s, tok2anon_tok):
 				anon_s.append(tok)
 
 	for i in range(0, len(anon_s)):		
+		if anon_s[i]=='?':
+			continue
 		anon_s[i] = anon_s[i].lower()
 	return anon_s
 
