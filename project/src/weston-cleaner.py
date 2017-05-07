@@ -47,12 +47,12 @@ with open(ontology_file, 'r') as f:
 		slots2vals[kbField2templateField('phone')].append(name.replace(' ','_') + ('_phone'))
 
 
-#val2slot['R_location'] = kbField2templateField('area')
-#val2slot['R_price'] = kbField2templateField('pricerange')
-#val2slot['R_cuisine'] = kbField2templateField('food')
-#slots2vals[kbField2templateField('area')].append('R_location')
-#slots2vals[kbField2templateField('pricerange')].append('R_price')
-#slots2vals[kbField2templateField('food')].append('R_cuisine')
+val2slot['R_location'] = kbField2templateField('area')
+val2slot['R_price'] = kbField2templateField('pricerange')
+val2slot['R_cuisine'] = kbField2templateField('food')
+slots2vals[kbField2templateField('area')].append('R_location')
+slots2vals[kbField2templateField('pricerange')].append('R_price')
+slots2vals[kbField2templateField('food')].append('R_cuisine')
 
 
 # pdb.set_trace()

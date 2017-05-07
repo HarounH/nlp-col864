@@ -67,6 +67,10 @@ def anonymise_string(s, tok2anon_tok):
 					anon_s.append(anon_name)
 			else:
 				anon_s.append(tok)
+	if anon_s[-1]=='?':
+		anon_s = anon_s[:-1]
+	for i in range(0, len(anon_s)):
+		anon_s[i] = anon_s[i].lower()
 	return anon_s
 
 def handle_file(infile, outfile, anonymise=False):
