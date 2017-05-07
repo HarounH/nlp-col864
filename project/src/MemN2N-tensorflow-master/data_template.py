@@ -16,7 +16,7 @@ def read_dstc2_data_template(fname):
 			if line.strip():
 				nid, line = line.split(' ', 1)
 				nid = int(nid)
-				line = line.rstrip()
+				line = line.rstrip('\r\n ')
 				if '\t' in line:
 					# Handle query_results
 					if len(query_results)>0:
@@ -31,7 +31,8 @@ def read_dstc2_data_template(fname):
 					data.append((mem[:], q, a, aidx))
 					mem.append(q)
 					mem.append(a.split(' '))
-
+				elif line=='api_call no result': # Unmodified no result line.
+					mem.append(['api_call','no_result'])
 				else:
 					toks = (line.split(' '))
 					resto_name = toks[0]
