@@ -104,3 +104,27 @@ def vectorize_data_template(raw_data, max_sentence_length, n_memory_cells, word2
 		answers.append(a)
 
 	return np.array(contexts), np.array(queries), np.array(answers)
+
+
+def ohe_templates(template2idx, word2idx, extra_words_count):
+	nwords = len(word2idx) + extra_words_count
+	retval = np.zeros((nwords, len(template2idx)), dtype=np.float32)
+
+	# pdb.set_trace()
+
+	for template,template_idx in template2idx.items():
+		toks = template.rstrip('\r\n ').split(' ')
+		word_list= []
+		for i in range(0, len(toks)):
+			if toks[i]=='?':
+				continue
+			if len(toks[i])==0 or toks[i][0]=='{':
+				continue
+			word_list.append(toks[i].lower())
+		for word in word_list:
+			word_idx = word2idx[word]
+			temp = retval[word_idx]
+			val = temp[template_idx]
+			retval[word_idx][template_idx] = 1
+
+	return retval

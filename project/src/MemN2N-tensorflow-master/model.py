@@ -48,7 +48,7 @@ class MemN2N(object):
         self.loss = None
         self.step = None
         self.optim = None
-
+        self.z = None
 
         self.sess = sess
         self.log_loss = []
@@ -160,13 +160,15 @@ class MemN2N(object):
                 K = tf.nn.relu(G)
                 self.hid.append(tf.concat(axis=1, values=[F, K]))
         '''
-    def build_model(self):
+    def build_model(self, phi_y):
         self.build_memory()
         # IMPORTANT: self.hid[-1] is the thing that comes out of the last hop.
-        self.W = tf.Variable(tf.random_normal([self.edim, self.n_candidates], stddev=self.init_std), name="W")
-        z = tf.matmul(self.hid[-1], self.W)
-        print(z)
-        self.loss = tf.nn.softmax_cross_entropy_with_logits(logits=z, labels=self.target)
+        self.W = tf.Variable(tf.random_normal([self.edim, self.nwords], stddev=self.init_std), name="W")
+        self.candidate_bow = tf.constant( phi_y , shape=[self.nwords, self.n_candidates], name="phiY")
+        temp = tf.matmul(self.hid[-1], self.W)
+        self.z = tf.matmul(temp, self.candidate_bow)
+        print(self.z)
+        self.loss = tf.nn.softmax_cross_entropy_with_logits(logits=self.z, labels=self.target)
 
         self.lr = tf.Variable(self.current_lr)
         self.opt = tf.train.GradientDescentOptimizer(self.lr)
@@ -186,6 +188,7 @@ class MemN2N(object):
         self.saver = tf.train.Saver()
 
     def train(self, data):
+        print('About to start training!')
         N = int(math.ceil(float(len(data[0])) / self.batch_size))
         cost = 0
         # pdb.set_trace()

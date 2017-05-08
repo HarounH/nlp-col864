@@ -3,7 +3,7 @@ import pprint
 import numpy as np
 import tensorflow as tf
 
-from data_template import read_dstc2_data_template, vectorize_data_template
+from data_template import read_dstc2_data_template, vectorize_data_template, ohe_templates
 from model import MemN2N
 from itertools import chain
 from six.moves import range, reduce
@@ -26,8 +26,8 @@ flags.DEFINE_float("max_grad_norm", 50, "clip gradients to this norm [50]")
 flags.DEFINE_string("data_dir", r"../weston_baseline/data/dialog-bAbI-tasks/", "data directory [data]")
 flags.DEFINE_string("checkpoint_dir", "ckpt/", "checkpoint directory [checkpoints]")
 # flags.DEFINE_string("data_name", "ptb", "data set name [ptb]")
-# flags.DEFINE_string("data_name", "dialog-babi-task6-dstc2", "data set name [dialog-babi-task6-dstc2]")
-flags.DEFINE_string("data_name", "small", "data set name [dialog-babi-task6-dstc2]")
+flags.DEFINE_string("data_name", "dialog-babi-task6-dstc2", "data set name [dialog-babi-task6-dstc2]")
+# flags.DEFINE_string("data_name", "small", "data set name [dialog-babi-task6-dstc2]")
 flags.DEFINE_boolean("is_test", False, "True for testing, False for Training [False]")
 flags.DEFINE_boolean("show", False, "print progress [False]")
 flags.DEFINE_string("templates_filename","dialog-babi-task6-dstc2-templatised-candidates.txt","file containing valid templates")
@@ -52,7 +52,7 @@ def main(_):
 
 	raw_data = raw_train + raw_test + raw_val
 
-	vocab = sorted(reduce(lambda x, y: x | y, (set(list(chain.from_iterable(s)) + q) for s, q, a, aidx in raw_data)))
+	vocab = sorted(reduce(lambda x, y: x | y, (set(list(chain.from_iterable(s)) + q + a.split(' ')) for s, q, a, aidx in raw_data)))
 	print('Vocab Size : ', len(vocab))
 	extra_words = 1 + 1 + FLAGS.mem_size-1 + 2 # One for OOVs, One for each position and one for system, one for user.
 	word2idx = dict((c, i + extra_words) for i, c in enumerate(vocab,0))
@@ -108,10 +108,12 @@ def main(_):
 
 	pp.pprint(flags.FLAGS.__flags)
 
+	phi_y = ohe_templates(template2idx, word2idx, extra_words)
+	# pdb.set_trace()
 	# Do model things.
 	with tf.Session() as sess:
 		model = MemN2N(FLAGS, sess)
-		model.build_model()
+		model.build_model(phi_y) # TODO
 
 		if FLAGS.is_test:
 			model.run(val_data, test_data)
