@@ -1,0 +1,70 @@
+Scores out of 26:
+	8 = Sachin
+	8 = Parag
+	8 Average from students
+	2 for peer grading well
+
+DERP:
+	Motivation = solid
+	Related Work = Okay
+	Approach = seems fine philosophically.
+		Need data of that form
+
+	Train supervised model
+
+	gold response = any valid response
+
+	in prediction its a score b/w 0,1
+
+	pruning reddit data
+
+	reddit context and tree structure.
+	label noise - pruning short responses
+
+	baseline models
+
+	different models:
+		bidirectional GRUs etc
+
+	no positional embedding
+
+	sanity check for model - does well
+
+	evaluated on 2 datasets - open subtitles, reddit
+
+	good results
+
+	Compare against paraphrase detection models
+
+FInE KB Completion:
+	
+	Contributions unclear
+
+	generic defn,
+		R_kb, R_txt;
+
+	tensor factorization models
+
+	detecting that entities are close to each other???
+
+	similarity metric between entities used
+
+	pick nearest neighbor of entity dish already seen
+
+	score of candidate = sum of different similarities
+
+	stuff from her paper?
+
+No Dhruvin:
+	Machine comprehension
+	SQuAD dataset
+
+	Some stuff about BIDAF. They're really excited about BIDAF. 
+
+	Error analysis of BIDAF. Cool. Manually annotated 1200 questions. Quantitative and Qualitative	
+
+	HWN with BIDAF
+	Gated Attention with BIDAF
+
+Dreamboot:
+	

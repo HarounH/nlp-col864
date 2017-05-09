@@ -1,144 +1,144 @@
-1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?	68
-2 i want a moderately priced restaurant in the area_1 part of town	api_call food_1 area_1 pricerange_1	8
-3 name_1 R_post_code postcode_1
-4 name_1 food_1 food_2
-5 name_1 area_2 area_1
-6 name_1 R_phone phone_1
-7 name_1 R_address addr_1
-8 name_1 pricerange_2 pricerange_1
-9 name_1 R_rating 3
-10 name_2 R_post_code postcode_2
-11 name_2 food_1 food_3
-12 name_2 area_2 area_1
-13 name_2 R_phone phone_2
-14 name_2 R_address addr_2
-15 name_2 pricerange_2 pricerange_1
-16 name_2 R_rating 9
-17 <SILENCE>	name_2 is a nice restaurant in the area_1 of town in the pricerange_1 price range	33
-18 is there anything else	You are looking for a restaurant is that right?	62
+1 <silence>	hello , welcome to the cambridge restaurant system . you can ask for restaurants by area , price range or food type . how may i help you ?	68
+2 i want a moderately priced restaurant in the area_1 part of town	api_call r_cuisine area_1 pricerange_1	8
+3 name_1 r_post_code postcode_1
+4 name_1 r_cuisine food_1
+5 name_1 r_location area_1
+6 name_1 r_phone phone_1
+7 name_1 r_address addr_1
+8 name_1 r_price pricerange_1
+9 name_1 r_rating 3
+10 name_2 r_post_code postcode_2
+11 name_2 r_cuisine food_2
+12 name_2 r_location area_1
+13 name_2 r_phone phone_2
+14 name_2 r_address addr_2
+15 name_2 r_price pricerange_1
+16 name_2 r_rating 9
+17 <silence>	name_2 is a nice restaurant in the area_1 of town in the pricerange_1 price range	33
+18 is there anything else	you are looking for a restaurant is that right?	62
 19 give me a different restaurant	name_2 is a nice restaurant in the area_1 of town in the pricerange_1 price range	33
 20 goodbye	 you are welcome	43
 
-1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?	68
-2 i want a moderately priced restaurant that serves	What kind of food would you like?	72
-3 food_1 food	What part of town do you have in mind?	65
-4 it doesnt matter	api_call food_1 area_1 pricerange_1	8
+1 <silence>	hello , welcome to the cambridge restaurant system . you can ask for restaurants by area , price range or food type . how may i help you ?	68
+2 i want a moderately priced restaurant that serves	what kind of food would you like?	72
+3 food_1 food	what part of town do you have in mind?	65
+4 it doesnt matter	api_call food_1 r_location pricerange_1	8
 5 api_call no result
-6 <SILENCE>	name_1 is a nice restaurant in the area_2 of town in the pricerange_1 price range	33
-7 food_2 food	Sorry there is no food_1 restaurant in the pricerange_1 price range	5
-8 i want a food_2 restaurant	name_2 is a nice restaurant in the area_2 of town serving food_2 food	0
-9 what is the address	Sure , name_2 is on addr_1	7
-10 what is the phone number	The phone number of name_2 is phone_1	11
-11 what is the area	name_2 is a nice place in the area_2 of town	4
+6 <silence>	name_1 is a nice restaurant in the area_1 of town in the pricerange_1 price range	33
+7 food_2 food	sorry there is no food_1 restaurant in the pricerange_1 price range	5
+8 i want a food_2 restaurant	name_2 is a nice restaurant in the area_1 of town serving food_2 food	0
+9 what is the address	sure , name_2 is on addr_1	7
+10 what is the phone number	the phone number of name_2 is phone_1	11
+11 what is the area	name_2 is a nice place in the area_1 of town	4
 12 thank you goodbye	 you are welcome	43
 
-1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?	68
-2 im looking for a pricerange_1 restaurant that serves food_1 food	api_call food_1 area_1 pricerange_1	8
+1 <silence>	hello , welcome to the cambridge restaurant system . you can ask for restaurants by area , price range or food type . how may i help you ?	68
+2 im looking for a pricerange_1 restaurant that serves food_1 food	api_call food_1 r_location pricerange_1	8
 3 api_call no result
-4 <SILENCE>	Sorry there is no food_1 restaurant in the pricerange_1 price range	5
-5 im looking for a pricerange_1 restaurant that serves food_2 food	What part of town do you have in mind?	65
-6 any part of town	api_call food_2 area_1 pricerange_1	8
-7 name_1 R_post_code postcode_1
-8 name_1 food_3 food_2
-9 name_1 area_1 area_2
-10 name_1 R_phone phone_1
-11 name_1 R_address addr_1
-12 name_1 pricerange_2 pricerange_1
-13 name_1 R_rating 4
-14 name_2 R_post_code postcode_2
-15 name_2 food_3 food_2
-16 name_2 area_1 area_2
-17 name_2 R_phone phone_2
-18 name_2 R_address addr_2
-19 name_2 pricerange_2 pricerange_1
-20 name_2 R_rating 2
-21 name_3 R_post_code postcode_3
-22 name_3 food_3 food_2
-23 name_3 area_1 area_3
-24 name_3 R_phone phone_3
-25 name_3 R_address addr_3
-26 name_3 pricerange_2 pricerange_1
-27 name_3 R_rating 3
-28 name_4 R_post_code postcode_4
-29 name_4 food_3 food_2
-30 name_4 area_1 area_4
-31 name_4 R_phone phone_4
-32 name_4 R_address addr_4
-33 name_4 pricerange_2 pricerange_1
-34 name_4 R_rating 2
-35 name_5 R_post_code postcode_5
-36 name_5 food_3 food_2
-37 name_5 area_1 area_2
-38 name_5 R_phone phone_5
-39 name_5 R_address addr_5
-40 name_5 pricerange_2 pricerange_1
-41 name_5 R_rating 10
-42 <SILENCE>	name_5 is a nice restaurant in the area_2 of town serving food_2 food	0
-43 may i have the address and phone number please	Sure , name_5 is on addr_5	7
-44 and the phone number please	The phone number of name_5 is phone_5	11
+4 <silence>	sorry there is no food_1 restaurant in the pricerange_1 price range	5
+5 im looking for a pricerange_1 restaurant that serves food_2 food	what part of town do you have in mind?	65
+6 any part of town	api_call food_2 r_location pricerange_1	8
+7 name_1 r_post_code postcode_1
+8 name_1 r_cuisine food_2
+9 name_1 r_location area_1
+10 name_1 r_phone phone_1
+11 name_1 r_address addr_1
+12 name_1 r_price pricerange_1
+13 name_1 r_rating 4
+14 name_2 r_post_code postcode_2
+15 name_2 r_cuisine food_2
+16 name_2 r_location area_1
+17 name_2 r_phone phone_2
+18 name_2 r_address addr_2
+19 name_2 r_price pricerange_1
+20 name_2 r_rating 2
+21 name_3 r_post_code postcode_3
+22 name_3 r_cuisine food_2
+23 name_3 r_location area_2
+24 name_3 r_phone phone_3
+25 name_3 r_address addr_3
+26 name_3 r_price pricerange_1
+27 name_3 r_rating 3
+28 name_4 r_post_code postcode_4
+29 name_4 r_cuisine food_2
+30 name_4 r_location area_3
+31 name_4 r_phone phone_4
+32 name_4 r_address addr_4
+33 name_4 r_price pricerange_1
+34 name_4 r_rating 2
+35 name_5 r_post_code postcode_5
+36 name_5 r_cuisine food_2
+37 name_5 r_location area_1
+38 name_5 r_phone phone_5
+39 name_5 r_address addr_5
+40 name_5 r_price pricerange_1
+41 name_5 r_rating 10
+42 <silence>	name_5 is a nice restaurant in the area_1 of town serving food_2 food	0
+43 may i have the address and phone number please	sure , name_5 is on addr_5	7
+44 and the phone number please	the phone number of name_5 is phone_5	11
 45 thank you good bye	 you are welcome	43
 
-1 <SILENCE>	Hello , welcome to the Cambridge restaurant system . You can ask for restaurants by area , price range or food type . How may I help you ?	68
-2 im looking for food_1 food in any price range	I am sorry but there is no food_1 restaurant that matches your request	41
-3 how about food_2	api_call food_2 area_1 pricerange_1	8
-4 name_1 R_post_code postcode_1
-5 name_1 food_3 food_2
-6 name_1 area_1 area_2
-7 name_1 R_phone phone_1
-8 name_1 R_address addr_1
-9 name_1 pricerange_1 pricerange_2
-10 name_1 R_rating 1
-11 name_2 R_post_code postcode_2
-12 name_2 food_3 food_2
-13 name_2 area_1 area_2
-14 name_2 R_phone phone_2
-15 name_2 R_address addr_2
-16 name_2 pricerange_1 pricerange_3
-17 name_2 R_rating 2
-18 name_3 R_post_code postcode_3
-19 name_3 food_3 food_2
-20 name_3 area_1 area_2
-21 name_3 R_phone phone_3
-22 name_3 R_address addr_3
-23 name_3 pricerange_1 pricerange_3
-24 name_3 R_rating 1
-25 name_4 R_post_code postcode_4
-26 name_4 food_3 food_2
-27 name_4 area_1 area_3
-28 name_4 R_phone phone_4
-29 name_4 R_address addr_4
-30 name_4 pricerange_1 pricerange_2
-31 name_4 R_rating 2
-32 name_5 R_post_code postcode_5
-33 name_5 food_3 food_2
-34 name_5 area_1 area_2
-35 name_5 R_phone phone_5
-36 name_5 R_address addr_5
-37 name_5 pricerange_1 pricerange_2
-38 name_5 R_rating 2
-39 name_6 R_post_code postcode_6
-40 name_6 food_3 food_2
-41 name_6 area_1 area_2
-42 name_6 R_phone phone_6
-43 name_6 R_address addr_6
-44 name_6 pricerange_1 pricerange_2
-45 name_6 R_rating 10
-46 name_7 R_post_code postcode_7
-47 name_7 food_3 food_2
-48 name_7 area_1 area_2
-49 name_7 R_phone phone_7
-50 name_7 R_address addr_7
-51 name_7 pricerange_1 pricerange_3
-52 name_7 R_rating 4
-53 name_8 R_post_code postcode_8
-54 name_8 food_3 food_2
-55 name_8 area_1 area_4
-56 name_8 R_phone phone_8
-57 name_8 R_address addr_8
-58 name_8 pricerange_1 pricerange_3
-59 name_8 R_rating 3
-60 <SILENCE>	name_6 is a great restaurant serving food_2 food and it is in the pricerange_2 price range	10
-61 food an	What part of town do you have in mind?	65
+1 <silence>	hello , welcome to the cambridge restaurant system . you can ask for restaurants by area , price range or food type . how may i help you ?	68
+2 im looking for food_1 food in any price range	i am sorry but there is no food_1 restaurant that matches your request	41
+3 how about food_2	api_call food_2 r_location r_price	8
+4 name_1 r_post_code postcode_1
+5 name_1 r_cuisine food_2
+6 name_1 r_location area_1
+7 name_1 r_phone phone_1
+8 name_1 r_address addr_1
+9 name_1 r_price pricerange_1
+10 name_1 r_rating 1
+11 name_2 r_post_code postcode_2
+12 name_2 r_cuisine food_2
+13 name_2 r_location area_1
+14 name_2 r_phone phone_2
+15 name_2 r_address addr_2
+16 name_2 r_price pricerange_2
+17 name_2 r_rating 2
+18 name_3 r_post_code postcode_3
+19 name_3 r_cuisine food_2
+20 name_3 r_location area_1
+21 name_3 r_phone phone_3
+22 name_3 r_address addr_3
+23 name_3 r_price pricerange_2
+24 name_3 r_rating 1
+25 name_4 r_post_code postcode_4
+26 name_4 r_cuisine food_2
+27 name_4 r_location area_2
+28 name_4 r_phone phone_4
+29 name_4 r_address addr_4
+30 name_4 r_price pricerange_1
+31 name_4 r_rating 2
+32 name_5 r_post_code postcode_5
+33 name_5 r_cuisine food_2
+34 name_5 r_location area_1
+35 name_5 r_phone phone_5
+36 name_5 r_address addr_5
+37 name_5 r_price pricerange_1
+38 name_5 r_rating 2
+39 name_6 r_post_code postcode_6
+40 name_6 r_cuisine food_2
+41 name_6 r_location area_1
+42 name_6 r_phone phone_6
+43 name_6 r_address addr_6
+44 name_6 r_price pricerange_1
+45 name_6 r_rating 10
+46 name_7 r_post_code postcode_7
+47 name_7 r_cuisine food_2
+48 name_7 r_location area_1
+49 name_7 r_phone phone_7
+50 name_7 r_address addr_7
+51 name_7 r_price pricerange_2
+52 name_7 r_rating 4
+53 name_8 r_post_code postcode_8
+54 name_8 r_cuisine food_2
+55 name_8 r_location area_3
+56 name_8 r_phone phone_8
+57 name_8 r_address addr_8
+58 name_8 r_price pricerange_2
+59 name_8 r_rating 3
+60 <silence>	name_6 is a great restaurant serving food_2 food and it is in the pricerange_1 price range	10
+61 food an	what part of town do you have in mind?	65
 62 any any part of town	name_6 serves food_2 food .	30
-63 may i have the address and phone number please	The phone number of name_6 is phone_6	11
+63 may i have the address and phone number please	the phone number of name_6 is phone_6	11
 64 thank you good bye	 you are welcome	43
